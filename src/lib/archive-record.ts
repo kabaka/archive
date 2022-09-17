@@ -34,11 +34,12 @@ class ArchiveRecord implements ArchiveRecordObj {
     processors: object,
     record: ArchiveRecordObj | null = null
   ) {
-    this.id = record?.id ?? crypto.randomUUID();
-    this.status = record?.status ?? ArchiveRecordStatus.new;
     this.data = record?.data ?? null;
+    this.id = record?.id ?? crypto.randomUUID();
     this.metadata = record?.metadata ?? {};
     this.mimeType = record?.mimeType ?? undefined;
+    this.status = record?.status ?? ArchiveRecordStatus.new;
+    this.tags = [];
 
     this.storage = storage;
     this.processors = processors;

@@ -1,4 +1,33 @@
 {
-    "extends": ["airbnb", "airbnb/hooks"],
-    "indent": ["error", 2]
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks"
+    // "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["tsconfig.json"]
+  },
+  "plugins": ["@typescript-eslint"],
+  "root": true,
+  "rules": {
+    "import/prefer-default-export": "off",
+    "indent": ["error", 2],
+    "react/function-component-definition": [
+        "error",
+        {
+            "namedComponents": "arrow-function",
+            "unnamedComponents": "arrow-function"
+        }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  }
 }

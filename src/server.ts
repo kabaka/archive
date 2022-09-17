@@ -1,6 +1,3 @@
-import { createServer } from "http";
-import { parse } from "url";
-import next from "next";
 import mime from "mime";
 import { fstat, promises } from "fs";
 const { opendir, realpath, rename, stat } = promises;
@@ -9,7 +6,6 @@ import * as lib from "./lib/index.js";
 import { ArchiveRecord, ArchiveRecordStatus } from "./lib/archive-record.js";
 import { config } from "./config.js";
 import { readFile, unlink } from "node:fs/promises";
-import { ArchiveProcessor } from "./lib/processor/processor.js";
 import { StorageContainer } from "./lib/storage/storage.js";
 
 const log = (...args: any[]) => {
@@ -18,10 +14,6 @@ const log = (...args: any[]) => {
 };
 
 log("Archive is starting.");
-
-const dev = process.env.NODE_ENV !== "production";
-// const app = next({ dev })
-// const handle = app.getRequestHandler()
 
 const storage: StorageContainer = {
   metadata: null,
@@ -32,14 +24,6 @@ const storage: StorageContainer = {
 
 const processors = {};
 const ingesting = {};
-
-// app.prepare().then(() => {
-//   createServer((req, res) => {
-//     handle(req, res, parse(req.url, true));
-//   }).listen(3000, () => {
-//     log('> Ready on http://localhost:3000')
-//   })
-// })
 
 const interval = 1000; // wait 5 seconds between scans
 const ingestionDir = "./ingestion/";
