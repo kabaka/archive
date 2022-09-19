@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { IArchiveProcessor, IArchiveRecord } from 'archive-types/types.js';
-import { Log } from '../log.js';
+import { Log } from 'archive-core/log.js';
 
 class ArchiveProcessorTxt implements IArchiveProcessor {
   mimeTypes = ['text/plain'];
@@ -13,8 +13,6 @@ class ArchiveProcessorTxt implements IArchiveProcessor {
 
     record.metadata.wordCount = recordDataStr.trim().split(/\s+/).length;
     record.metadata.lineCount = recordDataStr.split(/\n/).length;
-
-    record.addTag('mime-type: text/plain');
 
     Log.debug('ArchiveProcessorTxt.processRecord() after', record);
 

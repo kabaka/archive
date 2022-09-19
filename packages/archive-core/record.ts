@@ -6,7 +6,7 @@ import {
 } from 'archive-types/types.js';
 import { ArchiveStorage } from './storage.js';
 import { Tag } from './tag.js';
-import { ArchiveProcessor } from './processors.js';
+import { ArchiveProcessor } from '../archive-ingester/processors.js';
 
 class ArchiveRecord implements IArchiveRecord {
   data: any;

@@ -2,8 +2,8 @@ import { ComputerVisionClient } from '@azure/cognitiveservices-computervision';
 import { ApiKeyCredentials } from '@azure/ms-rest-js';
 
 import { IArchiveProcessor, IArchiveRecord } from 'archive-types/types.js';
-import { ArchiveConfiguration } from '../config.js';
-import { Log } from '../log.js';
+import { ArchiveConfiguration } from 'archive-core/config.js';
+import { Log } from 'archive-core/log.js';
 
 class ArchiveProcessorPdf implements IArchiveProcessor {
   mimeTypes = ['application/pdf'];

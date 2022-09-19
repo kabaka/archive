@@ -1,5 +1,5 @@
 import { ArchiveIngestorFilesystem } from './ingesters/filesystem.js';
-import { ArchiveProcessor } from 'archive-core/processors.js';
+import { ArchiveProcessor } from './processors.js';
 import { Log } from 'archive-core/log.js';
 import { ArchiveStorage } from 'archive-core/storage.js';
 

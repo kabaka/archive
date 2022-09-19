@@ -25,6 +25,8 @@ export namespace ArchiveIngestorFilesystem {
           originalFilePath: filePath,
         };
 
+        record.addTag(`mime-type: ${record.metadata.mimeType}`);
+
         record.data = await readFile(filePath);
 
         Log.debug('ingestFile() prep done; uploading (processing) ', filePath);
