@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.packages.json",
+  "compilerOptions": {
+    "lib": ["esnext"]
+  },
+  "include": ["server.ts"]
+}

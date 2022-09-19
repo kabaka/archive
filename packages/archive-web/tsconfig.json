@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.packages.json",
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react-jsx"
+  },
+  "exclude": ["public"]
+}
