@@ -10,7 +10,7 @@ import { Log } from 'archive-core/log.js';
 export namespace ArchiveIngestorFilesystem {
   const ingesting = {};
 
-  const ingestFile = (filePath) => {
+  const ingestFile = (filePath: string) => {
     const ingest = async (resolve, reject) => {
       if (ingesting[filePath] !== undefined) return;
 
@@ -61,7 +61,7 @@ export namespace ArchiveIngestorFilesystem {
     return new Promise(ingest);
   };
 
-  const ingestDirectory = (name) => {
+  const ingestDirectory = (name: string) => {
     const ingest = async () => {
       Log.debug('ingest()', name);
       const dir = opendirSync(name);
@@ -82,18 +82,18 @@ export namespace ArchiveIngestorFilesystem {
     return new Promise(ingest);
   };
 
+  export const scan = async (ingester) => {
+    Log.debug('scan()', ingester);
+    try {
+      ingestDirectory(ingester.dir);
+    } catch (err) {
+      Log.error('Error while checking for new files:', err);
+    }
+
+    setTimeout(scan, ingester.interval, ingester);
+  };
+
   export const startScanning = async () => {
-    const scan = async (ingester) => {
-      Log.debug('scan()', ingester);
-      try {
-        ingestDirectory(ingester.dir);
-      } catch (err) {
-        Log.error('Error while checking for new files:', err);
-      }
-
-      setTimeout(scan, ingester.interval, ingester);
-    };
-
     ArchiveConfiguration.ingestion.forEach((ingester) => {
       if (ingester.type !== 'filesystem') {
         return;

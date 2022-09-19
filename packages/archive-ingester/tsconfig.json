@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.packages.json",
   "compilerOptions": {
-    "lib": ["esnext"]
+    "lib": ["esnext"],
+    "outDir": "dist"
   },
-  "include": ["server.ts"]
+  "include": ["server.ts", "ingesters", "processors"]
 }

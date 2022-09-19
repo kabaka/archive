@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArchiveStorage } from '../storage';
+import { ArchiveStorage } from 'archive-core/storage';
 
 export default () => {
   const [tags, setTags] = useState([]);
@@ -21,3 +21,20 @@ export default () => {
     </>
   );
 };
+
+/**
+ *
+const myGetTags = async () => {
+  const tags = await ArchiveStorage.getTags();
+
+  Log.debug('getTags()', tags);
+
+  tags.forEach(async (tag) => {
+    await tag.getRecords();
+    Log.debug('getTags() records:', tag.records);
+  });
+};
+
+myGetTags();
+
+ */

@@ -9,8 +9,11 @@
     "dev": "ts-node --esm server.ts"
   },
   "dependencies": {
-    "typescript": "^4.8.3",
-    "archive-core": "0.1.0"
+    "@azure/cognitiveservices-computervision": "^8.2.0",
+    "@azure/ms-rest-js": "^2.6.2",
+    "archive-core": "0.1.0",
+    "mime": "^3.0.0",
+    "typescript": "^4.8.3"
   },
   "devDependencies": {
     "archive-types": "0.1.0",

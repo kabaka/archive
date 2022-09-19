@@ -9,12 +9,9 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
 # production
 /build
+packages/*/build
 
 # misc
 .DS_Store
@@ -31,6 +28,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# vercel
-.vercel
-config.ts
+# non-ts js
+*.js
+*.d.ts
+
+# should I do this?
+*.tsbuildinfo

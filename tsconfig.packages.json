@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
     "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": false,
+    "composite": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
+    "skipLibCheck": true,
+    "strict": false,
+    "target": "es5"
+    // "noEmit": true,
   },
   "exclude": ["node_modules"]
 }

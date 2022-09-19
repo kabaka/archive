@@ -7,7 +7,13 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    // "project": ["tsconfig.json"]
+    "project": [
+      "tsconfig.json",
+      "packages/archive-core/tsconfig.json",
+      "packages/archive-ingester/tsconfig.json",
+      "packages/archive-types/tsconfig.json",
+      "packages/archive-web/tsconfig.json"
+    ]
   },
   "plugins": ["@typescript-eslint"],
   "root": true,

@@ -2,8 +2,9 @@
   "extends": "../../tsconfig.packages.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "outDir": "dist"
   },
   "exclude": ["public"],
-  "references": [{ "path": "../archive-types" }]
+  "references": [{ "path": "../archive-types" }, { "path": "../archive-core" }]
 }
