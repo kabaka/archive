@@ -9,7 +9,7 @@ const items: ICommandBarItemProps[] = [
   {
     key: 'archive',
     text: 'Archive',
-    cacheKey: 'myCacheKey', // changing this key will invalidate this item's cache
+    cacheKey: '20220917-01', // changing this key will invalidate this item's cache
     iconProps: { iconName: 'Archive' },
   },
   {

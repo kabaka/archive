@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { mergeStyles } from '@fluentui/react';
 import { initializeIcons } from '@fluentui/react/lib/Icons';
-import { App } from './App';
-import reportWebVitals from './reportWebVitals';
+import { App } from './App.js';
+import reportWebVitals from './reportWebVitals.js';
 
 initializeIcons(/* optional base url */);
 
