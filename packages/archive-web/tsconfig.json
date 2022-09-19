@@ -4,5 +4,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "react-jsx"
   },
-  "exclude": ["public"]
+  "exclude": ["public"],
+  "references": [{ "path": "../archive-types" }]
 }

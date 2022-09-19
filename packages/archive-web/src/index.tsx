@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { mergeStyles } from '@fluentui/react';
 import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { App } from './App';
-import reportWebVitals from '../../archive-core/src/reportWebVitals';
+import reportWebVitals from './reportWebVitals';
 
 initializeIcons(/* optional base url */);
 

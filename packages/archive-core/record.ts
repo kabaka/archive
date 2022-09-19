@@ -38,13 +38,13 @@ class ArchiveRecord implements IArchiveRecord {
   async addTag(tagName: string) {
     const tag = new Tag(tagName);
 
-    return ArchiveStorage.tags.addTag(tag, this);
+    return ArchiveStorage.addTag(tag, this);
   }
 
   async removeTag(tagName: string) {
     const tag = new Tag(tagName);
 
-    return ArchiveStorage.tags.removeTag(tag, this);
+    return ArchiveStorage.removeTag(tag, this);
   }
 
   async process() {
@@ -62,7 +62,7 @@ class ArchiveRecord implements IArchiveRecord {
   async beginProcessing() {
     this.status = ArchiveRecordStatus.processing;
 
-    return ArchiveStorage.processing.createRecord(this);
+    return ArchiveStorage.storeArchiveRecord(this);
   }
 
   async finishProcessing() {
@@ -71,10 +71,11 @@ class ArchiveRecord implements IArchiveRecord {
     }
 
     try {
-      await ArchiveStorage.processed.createRecord(this);
-      await ArchiveStorage.processing.destroyRecord(this);
-
       this.status = ArchiveRecordStatus.processed;
+
+      // this will move the record to the 'processed' storage
+      await ArchiveStorage.storeArchiveRecord(this);
+
     } catch (err) {
       this.status = ArchiveRecordStatus.error;
 
@@ -83,7 +84,7 @@ class ArchiveRecord implements IArchiveRecord {
   }
 
   async flushMetadata() {
-    await ArchiveStorage.metadata.createMetadata(this);
+    await ArchiveStorage.storeArchiveRecordMetadata(this);
   }
 
   toString() {

@@ -6,7 +6,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { IArchiveStorageClient } from 'archive-types/types.js';
+import { IArchiveRecord, IArchiveStorageClient, IArchiveTag } from 'archive-types/types.js';
 import { Log } from '../log.js';
 import { ArchiveRecord } from '../record.js';
 
@@ -32,7 +32,7 @@ class S3Storage implements IArchiveStorageClient {
     this.s3 = new S3Client(this.configuration.client);
   }
 
-  async createRecord(record: ArchiveRecord) {
+  async createRecord(record: IArchiveRecord) {
     const params = {
       Key: record.id,
       Body: record.data,
@@ -45,11 +45,11 @@ class S3Storage implements IArchiveStorageClient {
     this.s3.send(command);
   }
 
-  async updateRecord(record: ArchiveRecord) {
+  async updateRecord(record: IArchiveRecord) {
     this.createRecord(record);
   }
 
-  async destroyRecord(record: string | ArchiveRecord) {
+  async destroyRecord(record: string | IArchiveRecord) {
     const params = {
       Bucket: this.configuration.bucket,
       Key: record.toString(),
@@ -79,7 +79,7 @@ class S3Storage implements IArchiveStorageClient {
     });
   }
 
-  async createMetadata(record: ArchiveRecord) {
+  async createMetadata(record: IArchiveRecord) {
     const params = {
       Body: JSON.stringify(record.metadata),
       Bucket: this.configuration.bucket,
@@ -141,7 +141,7 @@ class S3Storage implements IArchiveStorageClient {
     return tags;
   }
 
-  async getTagRecords(tag: Tag) {
+  async getTagRecords(tag: IArchiveTag) {
     const params: ListObjectsV2CommandInput = {
       Bucket: this.configuration.bucket,
       Prefix: `tagged/${tag.partitionName}/${tag.slug}`,
@@ -187,7 +187,7 @@ class S3Storage implements IArchiveStorageClient {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  private async createTag(tag: Tag) {
+  private async createTag(tag: IArchiveTag) {
     const params = {
       Body: tag.name,
       Bucket: this.configuration.bucket,
@@ -200,7 +200,7 @@ class S3Storage implements IArchiveStorageClient {
     this.s3.send(command);
   }
 
-  async addTag(tag: Tag, record: ArchiveRecord) {
+  async addTag(tag: IArchiveTag, record: IArchiveRecord) {
     // eslint-disable-next-line no-underscore-dangle
     this.createTag(tag);
 
@@ -216,7 +216,7 @@ class S3Storage implements IArchiveStorageClient {
     await this.s3.send(command);
   }
 
-  async removeTag(tag: Tag, record: ArchiveRecord) {
+  async removeTag(tag: IArchiveTag, record: IArchiveRecord) {
     const params = {
       Bucket: this.configuration.bucket,
       Key: `tags/${tag.partitionName}/${tag.slug}/${record.id}`,

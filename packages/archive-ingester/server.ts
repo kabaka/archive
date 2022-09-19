@@ -1,4 +1,4 @@
-import { ArchiveIngestorFilesystem } from 'archive-core/ingesters/filesystem.js';
+import { ArchiveIngestorFilesystem } from './ingesters/filesystem.js';
 import { ArchiveProcessor } from 'archive-core/processors.js';
 import { Log } from 'archive-core/log.js';
 import { ArchiveStorage } from 'archive-core/storage.js';
@@ -15,7 +15,7 @@ Log.info('Initializing filesystem watcher.');
 ArchiveIngestorFilesystem.startScanning();
 
 const myGetTags = async () => {
-  const tags = await ArchiveStorage.tags.getTags();
+  const tags = await ArchiveStorage.getTags();
 
   Log.debug('getTags()', tags);
 

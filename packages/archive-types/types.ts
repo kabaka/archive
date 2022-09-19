@@ -46,6 +46,7 @@ interface IArchiveStorageClient {
 
 interface IArchiveTag {
   name: string;
+  partitionName: string;
   records: IArchiveRecord[];
   slug: string;
 }
