@@ -1,12 +1,12 @@
-import * as crypto from 'crypto';
+import randomUUID from 'crypto-randomuuid';
 import {
   ArchiveRecordStatus,
   IArchiveRecord,
   IArchiveRecordInput,
-} from 'archive-types/types.js';
+} from 'archive-types';
+import { ArchiveProcessor } from './processors.js';
 import { ArchiveStorage } from './storage.js';
 import { Tag } from './tag.js';
-import { ArchiveProcessor } from '../archive-ingester/processors.js';
 
 class ArchiveRecord implements IArchiveRecord {
   data: any;
@@ -21,7 +21,7 @@ class ArchiveRecord implements IArchiveRecord {
 
   constructor(record: IArchiveRecord | IArchiveRecordInput | null = null) {
     this.data = record?.data ?? null;
-    this.id = record?.id ?? crypto.randomUUID();
+    this.id = record?.id ?? randomUUID();
     this.metadata = record?.metadata ?? {};
     this.status = record?.status ?? ArchiveRecordStatus.new;
     this.tags = [];
@@ -34,6 +34,20 @@ class ArchiveRecord implements IArchiveRecord {
 
     return 'application/octet-stream';
   }
+
+  get storage() {
+    switch (this.status) {
+      case ArchiveRecordStatus.processed:
+        return ArchiveStorage.processed;
+      case ArchiveRecordStatus.processing:
+      default:
+        return ArchiveStorage.processing;
+    }
+  }
+
+  /* get data() {
+    this.storage.getRecordData(this);
+  } */
 
   async addTag(tagName: string) {
     const tag = new Tag(tagName);
@@ -75,7 +89,6 @@ class ArchiveRecord implements IArchiveRecord {
 
       // this will move the record to the 'processed' storage
       await ArchiveStorage.storeArchiveRecord(this);
-
     } catch (err) {
       this.status = ArchiveRecordStatus.error;
 

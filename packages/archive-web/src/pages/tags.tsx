@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { ArchiveStorage } from 'archive-core/storage';
+import { ArchiveStorage } from 'archive-core';
+import { IArchiveTag } from 'archive-types';
 
 export default () => {
   const [tags, setTags] = useState([]);
 
   const getTags = async () => {
-    const newTags = await ArchiveStorage.tags.getTags();
+    try {
+      const newTags: IArchiveTag[] = await ArchiveStorage.getTags();
 
-    setTags(newTags);
+      setTags(newTags);
+    } catch (err) {
+      // XXX
+    }
   };
 
   useEffect(() => {
     getTags();
-  });
+  }, []);
 
   return (
     <>
       <h2>Tags</h2>
-      {tags.map((tag) => <p>{tag.name}</p>)}
+      <pre>{tags.map((tag) => <p>{tag.slug}</p>)}</pre>
+      <p>end of tags...</p>
     </>
   );
+  // {tags.map((tag) => <p>{tag.name}</p>)}
 };
 
 /**

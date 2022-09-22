@@ -1,4 +1,4 @@
-import { IArchiveRecord, IArchiveTag } from 'archive-types/types.js';
+import { IArchiveRecord, IArchiveTag } from 'archive-types';
 import { Slug } from './slug.js';
 import { ArchiveStorage } from './storage.js';
 

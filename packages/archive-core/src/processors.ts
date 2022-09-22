@@ -1,4 +1,4 @@
-import { IArchiveProcessor, IArchiveRecord } from 'archive-types/types.js';
+import { IArchiveProcessor, IArchiveRecord } from 'archive-types';
 import { ArchiveProcessorTxt } from './processors/txt.js';
 import { ArchiveProcessorPdf } from './processors/pdf.js';
 

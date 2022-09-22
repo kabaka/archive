@@ -4,9 +4,16 @@
   "license": "MIT",
   "private": true,
   "type": "module",
+  "main": "dist/index",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w"
+  },
   "dependencies": {
     "typescript": "^4.8.3",
-    "archive-core": "0.1.0"
+    "archive-core": "0.1.0",
+    "crypto": "npm:crypto-browserify",
+    "crypto-browserify": "^3.12.0"
   },
   "peerDependencies": {
     "eslint-config-airbnb-base": "^15.0.0"

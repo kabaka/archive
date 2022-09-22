@@ -3,7 +3,8 @@
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "react-jsx",
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src"
   },
   "exclude": ["public"],
   "references": [{ "path": "../archive-types" }, { "path": "../archive-core" }]

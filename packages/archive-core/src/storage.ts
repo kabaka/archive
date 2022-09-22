@@ -1,4 +1,4 @@
-import { ArchiveRecordStatus, IArchiveRecord, IArchiveTag } from 'archive-types/types.js';
+import { ArchiveRecordStatus, IArchiveRecord, IArchiveTag } from 'archive-types';
 import { ArchiveConfiguration } from './config.js';
 import { S3Storage } from './storage/s3.js';
 
@@ -17,9 +17,7 @@ export namespace ArchiveStorage {
   export const processing = createStorage(ArchiveConfiguration.storage.processing);
   export const tags = createStorage(ArchiveConfiguration.storage.tags);
 
-  export const getTags = () => {
-    return tags.getTags();
-  };
+  export const getTags = () => tags.getTags();
 
   export const addTag = async (tag: IArchiveTag, record: IArchiveRecord) => {
     await tags.addTag(tag, record);
@@ -33,7 +31,7 @@ export namespace ArchiveStorage {
     await metadata.createMetadata(record);
   };
 
-  export const storeArchiveRecord = async (record: IArchiveRecord) => { 
+  export const storeArchiveRecord = async (record: IArchiveRecord) => {
     await storeArchiveRecordMetadata(record);
 
     switch (record.status) {
@@ -47,7 +45,8 @@ export namespace ArchiveStorage {
         break;
       case ArchiveRecordStatus.error:
         throw new Error('attempted to write ArchiveRecord in error state');
-        break;
+      default:
+        throw new Error(`attempted to write ArchiveRecord with invalid status: ${record.status}`);
     }
   };
 }

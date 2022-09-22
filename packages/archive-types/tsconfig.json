@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.packages.json",
   "compilerOptions": {
     "lib": ["esnext"],
-    "outDir": "packages/archive-types/dist"
+    "outDir": "dist",
+    "rootDir": "src"
   }
 }

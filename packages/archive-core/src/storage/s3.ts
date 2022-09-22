@@ -5,11 +5,14 @@ import {
   ListObjectsV2CommandInput,
   PutObjectCommand,
   S3Client,
+  ServiceInputTypes,
+  ServiceOutputTypes,
 } from '@aws-sdk/client-s3';
-import { IArchiveRecord, IArchiveStorageClient, IArchiveTag } from 'archive-types/types.js';
-import { Log } from '../log.js';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { BuildMiddleware, HttpRequest } from '@aws-sdk/types';
+import { IArchiveRecord, IArchiveStorageClient, IArchiveTag } from 'archive-types';
 import { ArchiveRecord } from '../record.js';
-
+import { Log } from '../log.js';
 import { Tag } from '../tag.js';
 
 interface S3StorageConfig {
@@ -28,8 +31,33 @@ class S3Storage implements IArchiveStorageClient {
 
   constructor(configuration: S3StorageConfig) {
     this.configuration = configuration;
+    const client = new S3Client(configuration.client);
+    const middlewareName = 'presignHeaderMiddleware';
 
-    this.s3 = new S3Client(this.configuration.client);
+    const presignHeaderMiddleware: BuildMiddleware<
+    ServiceInputTypes,
+    ServiceOutputTypes
+    > = (next) => async (args) => {
+      const request = args.request as HttpRequest;
+      request.headers.host = [request.hostname, 9000].join(':');
+
+      return next(args);
+    };
+
+    const middlewareStack = client.middlewareStack.clone();
+
+    middlewareStack.addRelativeTo(presignHeaderMiddleware, {
+      name: middlewareName,
+      relation: 'after',
+      toMiddleware: 'hostHeaderMiddleware',
+      override: true,
+    });
+
+    this.s3 = {
+      middlewareStack,
+      config: client.config,
+      send: client.send,
+    } as S3Client;
   }
 
   async createRecord(record: IArchiveRecord) {
@@ -77,6 +105,19 @@ class S3Storage implements IArchiveStorageClient {
       mimeType: response.ContentType,
       status: null, // XXX
     });
+  }
+
+  async getTagName(tag: IArchiveTag) {
+    const params = {
+      Bucket: this.configuration.bucket,
+      Key: `tags/${tag.partitionName}/${tag.slug}`,
+    };
+
+    const command = new GetObjectCommand(params);
+
+    const response = await this.s3.send(command);
+
+    return response.Body;
   }
 
   async createMetadata(record: IArchiveRecord) {
@@ -133,8 +174,9 @@ class S3Storage implements IArchiveStorageClient {
           params.ContinuationToken = ContinuationToken;
         }
       } catch (err) {
-        Log.error(err);
+        // Log.error(err);
         truncated = false;
+        throw err;
       }
     }
 

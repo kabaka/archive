@@ -1,7 +1,5 @@
-import { Log } from 'archive-core/log.js';
-import { ArchiveStorage } from 'archive-core/storage.js';
+import { Log, ArchiveStorage, ArchiveProcessor } from 'archive-core';
 import { ArchiveIngestorFilesystem } from './ingesters/filesystem.js';
-import { ArchiveProcessor } from './processors.js';
 
 Log.info('Archive is starting.');
 

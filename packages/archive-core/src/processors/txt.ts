@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { IArchiveProcessor, IArchiveRecord } from 'archive-types/types.js';
-import { Log } from 'archive-core/log.js';
+import { IArchiveProcessor, IArchiveRecord } from 'archive-types';
+import { Log } from '../log.js';
 
 class ArchiveProcessorTxt implements IArchiveProcessor {
   mimeTypes = ['text/plain'];

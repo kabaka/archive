@@ -2,10 +2,8 @@ import { join } from 'path';
 import { opendirSync } from 'fs';
 import { readFile, unlink } from 'fs/promises';
 import mime from 'mime';
-import { ArchiveConfiguration } from 'archive-core/config.js';
-import { ArchiveRecord } from 'archive-core/record.js';
-import { ArchiveRecordStatus } from 'archive-types/types.js';
-import { Log } from 'archive-core/log.js';
+import { ArchiveConfiguration, ArchiveRecord, Log } from 'archive-core';
+import { ArchiveRecordStatus } from 'archive-types';
 
 export namespace ArchiveIngestorFilesystem {
   const ingesting = {};

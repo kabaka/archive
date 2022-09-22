@@ -2,7 +2,11 @@
   "extends": "../../tsconfig.packages.json",
   "compilerOptions": {
     "lib": ["esnext"],
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src"
   },
-  "include": ["server.ts", "ingesters", "processors"]
+  "references": [
+    { "path": "../archive-types" },
+    { "path": "../archive-core" }
+  ],
 }
