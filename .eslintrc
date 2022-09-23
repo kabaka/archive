@@ -19,7 +19,7 @@
   "root": true,
   "rules": {
     "import/prefer-default-export": "off",
-    // "indent": ["error", 2],
+    "indent": ["error", 2],
     "react/function-component-definition": [
       "error",
       {
