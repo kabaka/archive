@@ -7,13 +7,16 @@
     "dev": "PORT=9010 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predev": "node copy-fonts.cjs public/static/fonts/font-icons-mdl2",
+    "postbuild": "node copy-fonts.cjs build/static/fonts/font-icons-mdl2"
   },
   "dependencies": {
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-syntax-flow": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@fluentui/dom-utilities": "^2.2.2",
+    "@fluentui/font-icons-mdl2": "^8.4.13",
     "@fluentui/react": "^8.96.1",
     "@testing-library/dom": ">=8.18.1",
     "@testing-library/jest-dom": "^5.16.5",

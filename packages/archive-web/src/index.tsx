@@ -5,7 +5,7 @@ import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 
-initializeIcons(/* optional base url */);
+initializeIcons('/static/fonts/font-icons-mdl2/');
 
 // Inject some global styles
 mergeStyles({

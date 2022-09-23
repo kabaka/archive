@@ -32,5 +32,5 @@ yarn-error.log*
 *.js
 *.d.ts
 
-# should I do this?
-*.tsbuildinfo
+# fonts copied during build
+packages/archive-web/public/static/fonts/font-icons-mdl2
