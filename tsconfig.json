@@ -1,9 +1,9 @@
 {
   "references": [
-    { "path": "./packages/archive-core" },
-    { "path": "./packages/archive-ingester" },
-    { "path": "./packages/archive-types" },
-    { "path": "./packages/archive-web" }
+    { "path": "packages/archive-core" },
+    { "path": "packages/archive-ingester" },
+    { "path": "packages/archive-types" },
+    { "path": "packages/archive-web" }
   ],
   "files": [],
   "include": [],

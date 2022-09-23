@@ -6,6 +6,6 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "exclude": ["public"],
+  "exclude": ["public", "build"],
   "references": [{ "path": "../archive-types" }, { "path": "../archive-core" }]
 }
