@@ -22,26 +22,7 @@ export default () => {
   return (
     <>
       <h2>Tags</h2>
-      <pre>{tags.map((tag) => <p>{tag.slug}</p>)}</pre>
-      <p>end of tags...</p>
+      <ul>{tags.map((tag) => <li>{tag.slug}</li>)}</ul>
     </>
   );
-  // {tags.map((tag) => <p>{tag.name}</p>)}
 };
-
-/**
- *
-const myGetTags = async () => {
-  const tags = await ArchiveStorage.getTags();
-
-  Log.debug('getTags()', tags);
-
-  tags.forEach(async (tag) => {
-    await tag.getRecords();
-    Log.debug('getTags() records:', tag.records);
-  });
-};
-
-myGetTags();
-
- */

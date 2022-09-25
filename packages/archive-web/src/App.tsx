@@ -1,17 +1,34 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import * as React from 'react';
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+} from 'react-router-dom';
+import {
+  PartialTheme,
+  ThemeProvider,
+} from '@fluentui/react';
+
 import './App.css';
 import Tags from './pages/tags';
-import { AppCommandBar } from './components/header';
+import { AppContainer } from './components/AppContainer';
+
+const myTheme: PartialTheme = {
+  palette: {
+    themePrimary: '#0f8387',
+    themeDark: '#324c4d',
+  },
+};
 
 export const App: React.FunctionComponent = () => (
-  <BrowserRouter>
-    <AppCommandBar />
-    <Routes>
-      <Route path="/">
-        Hello
-      </Route>
-      <Route path="/tags" element=<Tags /> />
-    </Routes>
-  </BrowserRouter>
+  <ThemeProvider theme={myTheme}>
+    <BrowserRouter>
+      <AppContainer>
+        <Routes>
+          <Route path="/" element=<p>Hello</p> />
+          <Route path="/tags" element=<Tags /> />
+        </Routes>
+      </AppContainer>
+    </BrowserRouter>
+  </ThemeProvider>
 );

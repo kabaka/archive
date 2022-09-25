@@ -7,10 +7,9 @@ const overflowProps: IButtonProps = { ariaLabel: 'More commands' };
 
 const items: ICommandBarItemProps[] = [
   {
-    key: 'archive',
-    text: 'Archive',
-    cacheKey: '20220917-01', // changing this key will invalidate this item's cache
-    iconProps: { iconName: 'Archive' },
+    key: 'nav',
+    text: '',
+    iconProps: { iconName: 'GlobalNavButton' },
   },
   {
     key: 'upload',
