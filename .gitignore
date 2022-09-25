@@ -33,5 +33,8 @@ yarn-error.log*
 *.js
 *.d.ts
 
+# config
+config.ts
+
 # fonts copied during build
 packages/archive-web/public/static/fonts/font-icons-mdl2
