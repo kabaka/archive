@@ -17,7 +17,7 @@
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@fluentui/dom-utilities": "^2.2.2",
     "@fluentui/font-icons-mdl2": "^8.4.13",
-    "@fluentui/react": "^8.96.1",
+    "@fluentui/react": "^8.96.2",
     "@testing-library/dom": ">=8.18.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
