@@ -12,7 +12,7 @@
     "postbuild": "node copy-fonts.cjs build/static/fonts/font-icons-mdl2"
   },
   "dependencies": {
-    "@babel/core": "^7.0.0-0",
+    "@babel/core": "^7.19.3",
     "@babel/plugin-syntax-flow": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@fluentui/dom-utilities": "^2.2.2",
