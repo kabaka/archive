@@ -18,12 +18,14 @@ export namespace ArchiveIngestorFilesystem {
       const record = new ArchiveRecord();
 
       try {
+        const mimeType = mime.getType(filePath);
+
         record.metadata = {
-          mimeType: mime.getType(filePath),
+          mimeType,
           originalFilePath: filePath,
         };
 
-        record.addTag(`mime-type: ${record.metadata.mimeType}`);
+        record.addTag(`mime-type: ${mimeType}`);
 
         record.data = await readFile(filePath);
 

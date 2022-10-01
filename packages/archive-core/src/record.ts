@@ -6,27 +6,33 @@ import {
 } from 'archive-types';
 import { ArchiveProcessor } from './processors.js';
 import { ArchiveStorage } from './storage.js';
-import { Tag } from './tag.js';
+import { ArchiveTag } from './tag.js';
 
 class ArchiveRecord implements IArchiveRecord {
-  data: any;
+  dataCache: any;
 
   id: string;
 
-  metadata: any;
+  metadataCache: any;
 
   status: ArchiveRecordStatus;
 
   tags: string[];
 
-  constructor(record: IArchiveRecord | IArchiveRecordInput | null = null) {
-    this.data = record?.data ?? null;
-    this.id = record?.id ?? randomUUID();
-    this.metadata = record?.metadata ?? {};
-    this.status = record?.status ?? ArchiveRecordStatus.new;
+  constructor(record: IArchiveRecord | IArchiveRecordInput | string | null = null) {
+    if (typeof record === 'string') {
+      this.id = record;
+    } else {
+      // this.data = record?.data ?? null;
+      this.id = record?.id ?? randomUUID();
+      this.metadataCache = record?.metadata ?? {};
+      this.status = record?.status ?? ArchiveRecordStatus.new;
+    }
+
     this.tags = [];
   }
 
+  /*
   get mimeType() {
     if (this.metadata.mimeType !== undefined) {
       return this.metadata.mimeType;
@@ -34,6 +40,7 @@ class ArchiveRecord implements IArchiveRecord {
 
     return 'application/octet-stream';
   }
+  */
 
   get storage() {
     switch (this.status) {
@@ -45,18 +52,46 @@ class ArchiveRecord implements IArchiveRecord {
     }
   }
 
-  /* get data() {
-    this.storage.getRecordData(this);
-  } */
+  get data(): Promise<any> {
+    if (this.dataCache) {
+      return new Promise((resolve) => {
+        resolve(this.dataCache);
+      });
+    }
+
+    return this.storage.getRecordData(this.id);
+  }
+
+  set data(val: any) {
+    this.dataCache = val;
+    this.storage.updateRecord(this);
+  }
+
+  get metadata() {
+    if (this.metadataCache) {
+      /* return new Promise((resolve) => {
+        resolve(this.metadataCache);
+      }); */
+      return this.metadataCache;
+    }
+
+    return ArchiveStorage.getArchiveRecordMetadata(this.id);
+  }
+
+  set metadata(metadata: any) {
+    this.metadataCache = metadata;
+
+    this.flushMetadata();
+  }
 
   async addTag(tagName: string) {
-    const tag = new Tag(tagName);
+    const tag = new ArchiveTag(tagName);
 
     return ArchiveStorage.addTag(tag, this);
   }
 
   async removeTag(tagName: string) {
-    const tag = new Tag(tagName);
+    const tag = new ArchiveTag(tagName);
 
     return ArchiveStorage.removeTag(tag, this);
   }

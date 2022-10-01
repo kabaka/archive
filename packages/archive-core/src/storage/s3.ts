@@ -13,7 +13,8 @@ import { BuildMiddleware, HttpRequest } from '@aws-sdk/types';
 import { IArchiveRecord, IArchiveStorageClient, IArchiveTag } from 'archive-types';
 import { ArchiveRecord } from '../record.js';
 import { Log } from '../log.js';
-import { Tag } from '../tag.js';
+import { ArchiveTag } from '../tag.js';
+import { ArchiveStorage } from '../storage.js';
 
 interface S3StorageConfig {
   client: object;
@@ -60,10 +61,50 @@ class S3Storage implements IArchiveStorageClient {
     } as S3Client;
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  streamToString(stream): Promise<string> {
+    // window.alert(stream.read);
+    return new Promise((resolve, reject) => {
+      const chunks = [];
+
+      const processChunk = ({ done, value }): any => {
+        // alert('starting');
+
+        if (done) {
+          try {
+            const result = Buffer.concat(chunks).toString('utf8');
+
+            // window.alert(`done: ${result}`);
+
+            resolve(result);
+
+            return;
+          } catch (err) {
+            // eslint-disable-next-line no-alert
+            alert(err);
+          }
+        }
+
+        chunks.push(value);
+
+        // alert(`${done} :: ${chunks.length}: ${chunks.join(', ')}`);
+
+        // eslint-disable-next-line consistent-return
+        return stream.read().then(processChunk);
+      };
+
+      try {
+        stream.read().then(processChunk);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
   async createRecord(record: IArchiveRecord) {
     const params = {
       Key: record.id,
-      Body: record.data,
+      Body: await record.data,
       Bucket: this.configuration.bucket,
       ContentType: record.metadata.mimeType,
     };
@@ -101,10 +142,23 @@ class S3Storage implements IArchiveStorageClient {
     return new ArchiveRecord({
       id: recordId,
       data: response.Body,
-      metadata: null, // XXX
+      metadata: await ArchiveStorage.getArchiveRecordMetadata(recordId),
       mimeType: response.ContentType,
-      status: null, // XXX
+      status: null, // XXX no way to determine this right now
     });
+  }
+
+  async getRecordData(recordId: string) {
+    const params = {
+      Bucket: this.configuration.bucket,
+      Key: recordId,
+    };
+
+    const command = new GetObjectCommand(params);
+
+    const response = await this.s3.send(command);
+
+    return this.streamToString(response.Body);
   }
 
   async getTagName(tag: IArchiveTag) {
@@ -117,12 +171,12 @@ class S3Storage implements IArchiveStorageClient {
 
     const response = await this.s3.send(command);
 
-    return response.Body;
+    return this.streamToString(response.Body);
   }
 
   async createMetadata(record: IArchiveRecord) {
     const params = {
-      Body: JSON.stringify(record.metadata),
+      Body: JSON.stringify(await record.metadata),
       Bucket: this.configuration.bucket,
       ContentType: 'application/json',
       Key: record.id,
@@ -131,6 +185,29 @@ class S3Storage implements IArchiveStorageClient {
     const command = new PutObjectCommand(params);
 
     this.s3.send(command);
+  }
+
+  async getMetadata(record: IArchiveRecord | string) {
+    const params = {
+      Bucket: this.configuration.bucket,
+      Key: typeof record === 'string' ? record : record.id,
+    };
+
+    const command = new GetObjectCommand(params);
+
+    const response = await this.s3.send(command);
+    // alert(JSON.stringify(Object.keys(response.Body)));
+    try {
+      const metadata = await this.streamToString(response.Body.getReader());
+
+      // alert(`metadata: ${metadata.toString()}`);
+      return JSON.parse(metadata);
+    } catch (err) {
+      // alert(err);
+    }
+
+    // XXX
+    return '';
   }
 
   async getTags(prefix?: string) {
@@ -162,7 +239,7 @@ class S3Storage implements IArchiveStorageClient {
         const response = await this.s3.send(new ListObjectsV2Command(params));
 
         response.Contents.forEach((item) => {
-          const tag = new Tag(item.Key.split('/')[2]);
+          const tag = new ArchiveTag(item.Key.split('/')[2]);
           tags.push(tag);
         });
 
@@ -201,14 +278,9 @@ class S3Storage implements IArchiveStorageClient {
         // eslint-disable-next-line no-await-in-loop
         const response = await this.s3.send(new ListObjectsV2Command(params));
 
-        response.Contents.forEach((item) => {
-          const record = new ArchiveRecord({
-            id: item.Key.split('/')[3],
-            data: null, // XXX
-            metadata: null, // XXX
-            mimeType: null, // XXX
-            status: null, // XXX
-          });
+        response.Contents.forEach(async (item) => {
+          const record = new ArchiveRecord(item.Key.split('/')[3]);
+
           records.push(record);
         });
 

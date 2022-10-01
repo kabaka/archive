@@ -34,4 +34,4 @@ class ArchiveTag extends Slug implements IArchiveTag {
   }
 }
 
-export { ArchiveTag as Tag };
+export { ArchiveTag };

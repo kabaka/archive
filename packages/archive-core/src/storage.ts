@@ -27,6 +27,29 @@ export namespace ArchiveStorage {
     await tags.removeTag(tag, record);
   };
 
+  export const getTagRecords = async (tag: IArchiveTag) => {
+    await tags.getTagRecords(tag);
+  };
+
+  // eslint-disable-next-line max-len
+  export const getArchiveRecord = async (recordId: string, status: ArchiveRecordStatus = ArchiveRecordStatus.processed) => {
+    switch (status) {
+      case ArchiveRecordStatus.new:
+        throw new Error('attempted to load an ArchiveRecord with \'new\' status');
+      case ArchiveRecordStatus.processing:
+        return processing.getRecord(recordId);
+      case ArchiveRecordStatus.processed:
+        return processed.getRecord(recordId);
+      case ArchiveRecordStatus.error:
+        throw new Error('attempted to write ArchiveRecord in error state');
+      default:
+        throw new Error(`attempted to write ArchiveRecord with invalid status: ${status}`);
+    }
+  };
+
+  // eslint-disable-next-line max-len
+  export const getArchiveRecordMetadata = (record: IArchiveRecord | string) => metadata.getMetadata(record);
+
   export const storeArchiveRecordMetadata = async (record: IArchiveRecord) => {
     await metadata.createMetadata(record);
   };

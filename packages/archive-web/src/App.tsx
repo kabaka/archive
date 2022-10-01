@@ -1,17 +1,20 @@
 import * as React from 'react';
 import {
-  BrowserRouter,
-  Route,
-  Routes,
+  createBrowserRouter,
+  RouterProvider,
 } from 'react-router-dom';
 import {
   PartialTheme,
   ThemeProvider,
 } from '@fluentui/react';
 
+import { ArchiveStorage, ArchiveTag } from 'archive-core';
+
 import './App.css';
-import Tags from './pages/tags';
 import { AppContainer } from './components/AppContainer';
+import Tags from './pages/tags';
+import Tag from './pages/tag';
+import Record from './pages/record';
 
 const myTheme: PartialTheme = {
   palette: {
@@ -20,15 +23,43 @@ const myTheme: PartialTheme = {
   },
 };
 
+// const tagsLoader = async () => ArchiveStorage.getTags();
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <AppContainer />,
+    children: [
+      {
+        path: 'tags',
+        element: <Tags />,
+        loader: ArchiveStorage.getTags,
+      },
+      {
+        path: 'tags/:slug',
+        element: <Tag />,
+        loader: async ({ params }) => {
+          const tag = new ArchiveTag(params.slug);
+
+          const records = await tag.getRecords();
+          return records;
+        },
+      },
+      {
+        path: 'records/:id',
+        element: <Record />,
+        loader: async ({ params }) => {
+          const record = ArchiveStorage.getArchiveRecord(params.id);
+
+          return record;
+        },
+      },
+    ],
+  },
+]);
+
 export const App: React.FunctionComponent = () => (
   <ThemeProvider theme={myTheme}>
-    <BrowserRouter>
-      <AppContainer>
-        <Routes>
-          <Route path="/" element=<p>Hello</p> />
-          <Route path="/tags" element=<Tags /> />
-        </Routes>
-      </AppContainer>
-    </BrowserRouter>
+    <RouterProvider router={router} />
   </ThemeProvider>
 );

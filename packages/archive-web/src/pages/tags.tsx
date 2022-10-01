@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { ArchiveStorage } from 'archive-core';
+import React from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { IArchiveTag } from 'archive-types';
+import { ArchiveLink } from '../components/Link';
 
 export default () => {
-  const [tags, setTags] = useState([]);
-
-  const getTags = async () => {
-    try {
-      const newTags: IArchiveTag[] = await ArchiveStorage.getTags();
-
-      setTags(newTags);
-    } catch (err) {
-      // XXX
-    }
-  };
-
-  useEffect(() => {
-    getTags();
-  }, []);
+  const tags: any = useLoaderData();
 
   return (
     <>
       <h2>Tags</h2>
-      <ul>{tags.map((tag) => <li>{tag.slug}</li>)}</ul>
+      <ul>
+        {
+          tags.map((tag: IArchiveTag) => (
+            <ArchiveLink key={tag.slug} href={`/tags/${tag.slug}`}>{tag.slug}</ArchiveLink>
+          ))
+        }
+      </ul>
     </>
   );
 };

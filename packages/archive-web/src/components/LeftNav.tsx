@@ -14,9 +14,9 @@ export interface IComponentClassNames {
 const navStyles: Partial<INavStyles> = {
   root: {
     width: 208,
-    height: 300,
+    height: '100vh',
     boxSizing: 'border-box',
-    border: '1px solid #222',
+    borderRight: '2px solid #aaa',
     overflowY: 'auto',
   },
 };
@@ -59,7 +59,7 @@ export const LeftNav: React.FunctionComponent = () => {
         navigate(item.url);
       } catch (err) {
         // eslint-disable-next-line no-alert
-        alert(`${err}\n${err.stack}${err.line}`);
+        alert(`${err}\n${err.stack}\n${err.line}`);
       }
 
       // eslint-disable-next-line no-alert

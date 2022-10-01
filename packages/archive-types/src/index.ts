@@ -18,7 +18,6 @@ interface IArchiveRecord {
   data: any;
   id: string;
   metadata: any;
-  mimeType: string;
   status: ArchiveRecordStatus;
   addTag(tagName: string);
 }
