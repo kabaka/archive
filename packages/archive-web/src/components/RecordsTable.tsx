@@ -7,20 +7,21 @@ import {
   IColumn,
   Icon,
   MarqueeSelection,
-  mergeStyleSets,
   Selection,
   SelectionMode,
   TextField,
   Toggle,
+  mergeStyleSets,
 } from '@fluentui/react';
 import {
-  getFileTypeIconProps,
-} from '@fluentui/react-file-type-icons';
+  useEffect,
+  useState,
+} from 'react';
 
 import { IArchiveRecord } from 'archive-types';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { getFileTypeIconProps } from '@fluentui/react-file-type-icons';
 import { useBoolean } from '@fluentui/react-hooks';
+import { useNavigate } from 'react-router-dom';
 
 interface IArchiveRecordRow {
   id: any;
@@ -37,32 +38,14 @@ function copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: bool
     (isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
 }
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const onRenderIcon = () => <Icon {...getFileTypeIconProps({ extension: 'docx', size: 16 })} />;
+const onRenderIcon = () => (
+  <Icon {...getFileTypeIconProps({
+    extension: 'docx', size: 16,
+  })}
+  />
+);
 
 const classNames = mergeStyleSets({
-  fileIconHeaderIcon: {
-    padding: 0,
-    fontSize: '16px',
-  },
-  fileIconCell: {
-    textAlign: 'center',
-    selectors: {
-      '&:before': {
-        content: '.',
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        height: '100%',
-        width: '0px',
-        visibility: 'hidden',
-      },
-      verticalAlign: 'middle',
-    },
-  },
-  fileIconImg: {
-    maxHeight: '16px',
-    maxWidth: '16px',
-  },
   controlWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -72,9 +55,29 @@ const classNames = mergeStyleSets({
     marginBottom: '10px',
     marginRight: '30px',
   },
-  selectionDetails: {
-    marginBottom: '20px',
+  fileIconCell: {
+    selectors: {
+      '&:before': {
+        content: '.',
+        display: 'inline-block',
+        height: '100%',
+        verticalAlign: 'middle',
+        visibility: 'hidden',
+        width: '0px',
+      },
+      verticalAlign: 'middle',
+    },
+    textAlign: 'center',
   },
+  fileIconHeaderIcon: {
+    fontSize: '16px',
+    padding: 0,
+  },
+  fileIconImg: {
+    maxHeight: '16px',
+    maxWidth: '16px',
+  },
+  selectionDetails: { marginBottom: '20px' },
 });
 
 const controlStyles = {
@@ -96,91 +99,96 @@ interface IRecordsTableProps {
   records: IArchiveRecord[];
 }
 
+const dateCell = (row: IArchiveRecordRow) => {
+  const date = new Date(row.modified);
+  return <span>{date.toLocaleString()}</span>;
+};
+
 // eslint-disable-next-line max-len
 export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props: IRecordsTableProps) => {
   const navigate = useNavigate();
-  const [allItems, setAllItems] = useState([]);
-  const [items, setItems] = useState([]);
-  const [announcedMessage, setAnnouncedMessage] = useState('');
-  const [selection] = useState(new Selection());
-  const [selectionDetails, setSelectionDetails] = useState('No items selected.');
-  const [isCompactMode, { setTrue: setCompactModeOn, setFalse: setCompactModeOff }] = useBoolean(false); // XXX
-  const [isModalSelection, { setTrue: enableModalSelection, setFalse: disableModalSelection }] = useBoolean(false); // XXX
+  const [ allItems, setAllItems ] = useState([]);
+  const [ items, setItems ] = useState([]);
+  const [ announcedMessage, setAnnouncedMessage ] = useState('');
+  const [ selection ] = useState(new Selection());
+  const [ selectionDetails, setSelectionDetails ] = useState('No items selected.');
+  const [ isCompactMode, {
+    setTrue: setCompactModeOn, setFalse: setCompactModeOff,
+  } ] = useBoolean(false); // XXX
+  const [ isModalSelection, {
+    setTrue: enableModalSelection, setFalse: disableModalSelection,
+  } ] = useBoolean(false); // XXX
 
-  const [columns, setColumns]: [IColumn[], any] = useState([
+  const [ columns, setColumns ]: [IColumn[], any] = useState([
     {
-      key: 'fileType',
-      name: 'File Type',
-      className: classNames.fileIconCell,
-      iconClassName: classNames.fileIconHeaderIcon,
       ariaLabel: 'Column operations for File type, Press to sort on File type',
+      className: classNames.fileIconCell,
+      fieldName: 'mimeType',
+      iconClassName: classNames.fileIconHeaderIcon,
       iconName: 'Page',
       isIconOnly: true,
-      fieldName: 'mimeType',
-      minWidth: 16,
+      key: 'fileType',
       maxWidth: 16,
+      minWidth: 16,
+      name: 'File Type',
       onRender: onRenderIcon,
     },
     {
-      key: 'id',
-      name: 'ID',
       fieldName: 'id',
-      minWidth: 210,
-      maxWidth: 350,
-      isRowHeader: true,
+      isPadded: true,
       isResizable: true,
+      isRowHeader: true,
       isSorted: true,
       isSortedDescending: false,
+      key: 'id',
+      maxWidth: 350,
+      minWidth: 210,
+      name: 'ID',
       sortAscendingAriaLabel: 'Sorted A to Z',
       sortDescendingAriaLabel: 'Sorted Z to A',
-      data: 'string',
-      isPadded: true,
     },
     {
-      key: 'originalFilePath',
-      name: 'Original File Path',
-      minWidth: 210,
-      maxWidth: 350,
-      isRowHeader: true,
-      isResizable: true,
-      isSorted: true,
-      isSortedDescending: false,
-      sortAscendingAriaLabel: 'Sorted A to Z',
-      sortDescendingAriaLabel: 'Sorted Z to A',
       fieldName: 'originalFilePath',
-      data: 'string',
       isPadded: true,
+      isResizable: true,
+      isRowHeader: true,
+      isSorted: true,
+      isSortedDescending: false,
+      key: 'originalFilePath',
+      maxWidth: 350,
+      minWidth: 210,
+      name: 'Original File Path',
+      sortAscendingAriaLabel: 'Sorted A to Z',
+      sortDescendingAriaLabel: 'Sorted Z to A',
     },
     {
-      key: 'modifiedDate',
-      name: 'Date Modified',
       fieldName: 'modified',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
-      data: 'number',
       isPadded: true,
+      isResizable: true,
+      key: 'modifiedDate',
+      maxWidth: 200,
+      minWidth: 125,
+      name: 'Date Modified',
+      onRender: dateCell,
     },
     {
-      key: 'modifiedBy',
-      name: 'Modified By',
       fieldName: 'modifiedBy',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
       isCollapsible: true,
-      data: 'string',
       isPadded: true,
+      isResizable: true,
+      key: 'modifiedBy',
+      maxWidth: 90,
+      minWidth: 70,
+      name: 'Modified By',
     },
     {
-      key: 'size',
-      name: 'Size',
       fieldName: 'size',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
       isCollapsible: true,
-      data: 'number',
+      isResizable: true,
+      key: 'size',
+      maxWidth: 90,
+      minWidth: 70,
+      name: 'Size',
     },
   ]);
 
@@ -204,7 +212,7 @@ export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props:
       setAllItems(result);
       setItems(result);
     })();
-  }, [props]);
+  }, [ props ]);
 
   useEffect(() => {
     const selectionCount = selection.getSelectedCount();
@@ -220,7 +228,7 @@ export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props:
         setSelectionDetails(`${selectionCount} items selected`);
         break;
     }
-  }, [selection]);
+  }, [ selection ]);
 
   const onColumnHeaderClick = (ev: React.MouseEvent<HTMLElement>, column: IColumn): void => {
     const newColumns: IColumn[] = columns.slice();

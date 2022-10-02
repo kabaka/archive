@@ -1,9 +1,9 @@
-import React from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
-
+import {
+  useLoaderData,
+  useParams,
+} from 'react-router-dom';
 import { ArchiveTag } from 'archive-core';
-// import { IArchiveRecord } from 'archive-types';
-// import { ArchiveLink } from '../components/Link';
+import React from 'react';
 import { RecordsTable } from '../components/RecordsTable';
 
 export default () => {

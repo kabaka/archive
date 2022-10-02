@@ -1,16 +1,24 @@
 import * as React from 'react';
-
 import {
-  TagPicker,
-  ITag,
-  IInputProps,
+  ArchiveStorage,
+  ArchiveTag,
+} from 'archive-core';
+import {
+  IArchiveRecord,
+  IArchiveTag,
+} from 'archive-types';
+import {
   IBasePickerSuggestionsProps,
+  IInputProps,
+  ITag,
+  TagPicker,
 } from '@fluentui/react';
-
-import { ArchiveStorage, ArchiveTag } from 'archive-core';
-import { IArchiveRecord, IArchiveTag } from 'archive-types';
+import {
+  useEffect,
+  useState,
+} from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+// eslint-disable-next-line sort-imports
 import { RecordsTable } from '../components/RecordsTable';
 
 const inputProps: IInputProps = {
@@ -19,8 +27,8 @@ const inputProps: IInputProps = {
 };
 
 const pickerSuggestionsProps: IBasePickerSuggestionsProps = {
-  suggestionsHeaderText: 'Suggested tags',
   noResultsFoundText: 'No matches found',
+  suggestionsHeaderText: 'Suggested tags',
 };
 
 const filterSuggestedTags = async (filterText: string, selectedTags: ITag[]): Promise<ITag[]> => {
@@ -37,8 +45,8 @@ const filterSuggestedTags = async (filterText: string, selectedTags: ITag[]): Pr
   ));
 
   const result = await Promise.all(tags.map(async (tag): Promise<ITag> => ({
-    name: await tag.name,
     key: tag.slug,
+    name: await tag.name,
   })));
 
   return result;
@@ -47,8 +55,8 @@ const filterSuggestedTags = async (filterText: string, selectedTags: ITag[]): Pr
 const getTextFromItem = (item: ITag) => item.name;
 
 export default () => {
-  const [records, setRecords]: [IArchiveRecord[], any] = useState([]);
-  const [search, setSearch] = useSearchParams();
+  const [ records, setRecords ]: [IArchiveRecord[], any] = useState([]);
+  const [ search, setSearch ] = useSearchParams();
 
   // TODO: populate tags input from URL query params on load
 
@@ -76,7 +84,7 @@ export default () => {
 
       setRecords(results);
     })();
-  }, [search]);
+  }, [ search ]);
 
   return (
     <>

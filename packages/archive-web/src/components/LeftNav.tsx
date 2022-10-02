@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  Nav, INavLink, INavStyles, INavLinkGroup,
+  INavLink,
+  INavLinkGroup,
+  INavStyles,
+  Nav,
 } from '@fluentui/react';
+import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import { useState } from 'react';
 
 export interface IComponentClassNames {
   root: string;
@@ -13,11 +19,11 @@ export interface IComponentClassNames {
 
 const navStyles: Partial<INavStyles> = {
   root: {
-    width: 208,
-    height: '100vh',
-    boxSizing: 'border-box',
     borderRight: '2px solid #aaa',
+    boxSizing: 'border-box',
+    height: '100vh',
     overflowY: 'auto',
+    width: 208,
   },
 };
 
@@ -25,19 +31,19 @@ const navLinkGroups: INavLinkGroup[] = [
   {
     links: [
       {
+        key: '/',
         name: 'Home',
         url: '/',
-        key: '/',
       },
       {
+        key: 'records',
         name: 'Records',
         url: '/records',
-        key: 'records',
       },
       {
+        key: 'tags',
         name: 'Tags',
         url: '/tags',
-        key: 'tags',
       },
     ],
   },
@@ -46,7 +52,7 @@ const navLinkGroups: INavLinkGroup[] = [
 export const LeftNav: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeKey, setActiveKey] = useState(location.pathname.split('/')[1]);
+  const [ activeKey, setActiveKey ] = useState(location.pathname.split('/')[1]);
 
   const onLinkClick = (ev?: React.MouseEvent<HTMLElement>, item?: INavLink) => {
     if (ev) {

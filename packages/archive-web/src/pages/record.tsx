@@ -1,5 +1,8 @@
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 import { IArchiveTag } from 'archive-types';
-import React, { useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 // import { IArchiveRecord } from 'archive-types';
@@ -8,7 +11,7 @@ export default () => {
   const record: any = useLoaderData();
   const { metadata } = record;
 
-  const [tags, setTags] = useState([]);
+  const [ tags, setTags ] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -20,8 +23,9 @@ export default () => {
       })));
 
       setTags(newTags);
+      // await record.flushMetadata();
     })();
-  }, [record]);
+  }, [ record ]);
 
   return (
     <>
@@ -36,7 +40,7 @@ export default () => {
         {Object.keys(metadata).map((key) => (
           <>
             <dt>
-              {key.replace(/([A-Z])/g, ' $1').replace(/^./, (m) => m.toUpperCase())}
+              {key.replace(/([A-Z])/gu, ' $1').replace(/^./u, (m) => m.toUpperCase())}
             </dt>
             <dd>
               {metadata[key]}

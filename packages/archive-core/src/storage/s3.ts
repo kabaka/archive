@@ -1,4 +1,8 @@
 import {
+  BuildMiddleware,
+  HttpRequest,
+} from '@aws-sdk/types';
+import {
   DeleteObjectCommand,
   GetObjectCommand,
   ListObjectsV2Command,
@@ -8,13 +12,13 @@ import {
   ServiceInputTypes,
   ServiceOutputTypes,
 } from '@aws-sdk/client-s3';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { BuildMiddleware, HttpRequest } from '@aws-sdk/types';
-import { IArchiveRecord, IArchiveStorageClient, IArchiveTag } from 'archive-types';
+import {
+  IArchiveRecord, IArchiveStorageClient, IArchiveTag,
+} from 'archive-types';
 import { ArchiveRecord } from '../record.js';
-import { Log } from '../log.js';
-import { ArchiveTag } from '../tag.js';
 import { ArchiveStorage } from '../storage.js';
+import { ArchiveTag } from '../tag.js';
+import { Log } from '../log.js';
 
 interface S3StorageConfig {
   client: object;
@@ -38,9 +42,9 @@ class S3Storage implements IArchiveStorageClient {
     const presignHeaderMiddleware: BuildMiddleware<
     ServiceInputTypes,
     ServiceOutputTypes
-    > = (next) => async (args) => {
+    > = (next) => (args) => {
       const request = args.request as HttpRequest;
-      request.headers.host = [request.hostname, 9000].join(':');
+      request.headers.host = [ request.hostname, 9000 ].join(':');
 
       return next(args);
     };
@@ -49,14 +53,14 @@ class S3Storage implements IArchiveStorageClient {
 
     middlewareStack.addRelativeTo(presignHeaderMiddleware, {
       name: middlewareName,
+      override: true,
       relation: 'after',
       toMiddleware: 'hostHeaderMiddleware',
-      override: true,
     });
 
     this.s3 = {
-      middlewareStack,
       config: client.config,
+      middlewareStack,
       send: client.send,
     } as S3Client;
   }
@@ -66,7 +70,9 @@ class S3Storage implements IArchiveStorageClient {
     return new Promise((resolve, reject) => {
       const chunks = [];
 
-      const processChunk = ({ done, value }): any => {
+      const processChunk = ({
+        done, value,
+      }): any => {
         if (done) {
           const result = Buffer.concat(chunks).toString('utf8');
           resolve(result);
@@ -90,10 +96,10 @@ class S3Storage implements IArchiveStorageClient {
 
   async createRecord(record: IArchiveRecord) {
     const params = {
-      Key: record.id,
       Body: await record.data,
       Bucket: this.configuration.bucket,
       ContentType: record.metadata.mimeType,
+      Key: record.id,
     };
 
     const command = new PutObjectCommand(params);
@@ -101,11 +107,11 @@ class S3Storage implements IArchiveStorageClient {
     this.s3.send(command);
   }
 
-  async updateRecord(record: IArchiveRecord) {
+  updateRecord(record: IArchiveRecord) {
     this.createRecord(record);
   }
 
-  async destroyRecord(record: string | IArchiveRecord) {
+  destroyRecord(record: string | IArchiveRecord) {
     const params = {
       Bucket: this.configuration.bucket,
       Key: record.toString(),
@@ -127,8 +133,8 @@ class S3Storage implements IArchiveStorageClient {
     const response = await this.s3.send(command);
 
     return new ArchiveRecord({
-      id: recordId,
       data: response.Body,
+      id: recordId,
       metadata: await ArchiveStorage.getArchiveRecordMetadata(recordId),
       status: null, // XXX no way to determine this right now
     });
@@ -311,7 +317,7 @@ class S3Storage implements IArchiveStorageClient {
         // eslint-disable-next-line no-await-in-loop
         const response = await this.s3.send(new ListObjectsV2Command(params));
 
-        response.Contents.forEach(async (item) => {
+        response.Contents.forEach((item) => {
           const record = new ArchiveRecord(item.Key.split('/')[3]);
 
           records.push(record);
@@ -334,7 +340,7 @@ class S3Storage implements IArchiveStorageClient {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  private async createTag(tag: IArchiveTag) {
+  private createTag(tag: IArchiveTag) {
     const params = {
       Body: tag.name,
       Bucket: this.configuration.bucket,
@@ -374,7 +380,7 @@ class S3Storage implements IArchiveStorageClient {
     await this.s3.send(command);
   }
 
-  async removeTag(tag: IArchiveTag, record: IArchiveRecord) {
+  removeTag(tag: IArchiveTag, record: IArchiveRecord) {
     const params = {
       Bucket: this.configuration.bucket,
       Key: `tags/${tag.partitionName}/${tag.slug}/${record.id}`,

@@ -1,9 +1,13 @@
-import { join } from 'path';
-import { opendirSync } from 'fs';
-import { readFile, unlink } from 'fs/promises';
-import mime from 'mime';
-import { ArchiveConfiguration, ArchiveRecord, Log } from 'archive-core';
+import {
+  ArchiveConfiguration, ArchiveRecord, Log,
+} from 'archive-core';
+import {
+  readFile, unlink,
+} from 'fs/promises';
 import { ArchiveRecordStatus } from 'archive-types';
+import { join } from 'path';
+import mime from 'mime';
+import { opendirSync } from 'fs';
 
 export namespace ArchiveIngestorFilesystem {
   const ingesting = {};
@@ -85,7 +89,7 @@ export namespace ArchiveIngestorFilesystem {
     return new Promise(ingest);
   };
 
-  export const scan = async (ingester) => {
+  export const scan = (ingester) => {
     Log.debug('scan()', ingester);
     try {
       ingestDirectory(ingester.dir);
@@ -96,7 +100,7 @@ export namespace ArchiveIngestorFilesystem {
     setTimeout(scan, ingester.interval, ingester);
   };
 
-  export const startScanning = async () => {
+  export const startScanning = () => {
     ArchiveConfiguration.ingestion.forEach((ingester) => {
       if (ingester.type !== 'filesystem') {
         return;

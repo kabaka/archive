@@ -1,6 +1,9 @@
-import { IArchiveProcessor, IArchiveRecord } from 'archive-types';
-import { ArchiveProcessorTxt } from './processors/txt.js';
+import {
+  IArchiveProcessor,
+  IArchiveRecord,
+} from 'archive-types';
 import { ArchiveProcessorPdf } from './processors/pdf.js';
+import { ArchiveProcessorTxt } from './processors/txt.js';
 
 export namespace ArchiveProcessor {
   const map: any = {};

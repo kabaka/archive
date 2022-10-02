@@ -1,4 +1,8 @@
-import { Log, ArchiveStorage, ArchiveProcessor } from 'archive-core';
+import {
+  ArchiveProcessor,
+  ArchiveStorage,
+  Log,
+} from 'archive-core';
 import { ArchiveIngestorFilesystem } from './ingesters/filesystem.js';
 
 Log.info('Archive is starting.');

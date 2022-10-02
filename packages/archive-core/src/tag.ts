@@ -1,6 +1,9 @@
-import { IArchiveRecord, IArchiveTag } from 'archive-types';
-import { Slug } from './slug.js';
+import {
+  IArchiveRecord,
+  IArchiveTag,
+} from 'archive-types';
 import { ArchiveStorage } from './storage.js';
+import { Slug } from './slug.js';
 
 class ArchiveTag extends Slug implements IArchiveTag {
   nameCache: string;

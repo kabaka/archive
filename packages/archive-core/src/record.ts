@@ -1,9 +1,10 @@
-import randomUUID from 'crypto-randomuuid';
 import {
   ArchiveRecordStatus,
   IArchiveRecord,
   IArchiveRecordInput,
 } from 'archive-types';
+import randomUUID from 'crypto-randomuuid';
+// eslint-disable-next-line sort-imports
 import { ArchiveProcessor } from './processors.js';
 import { ArchiveStorage } from './storage.js';
 import { ArchiveTag } from './tag.js';
@@ -88,13 +89,13 @@ class ArchiveRecord implements IArchiveRecord {
     return ArchiveStorage.getRecordTags(this);
   }
 
-  async addTag(tagName: string) {
+  addTag(tagName: string) {
     const tag = new ArchiveTag(tagName);
 
     return ArchiveStorage.addTag(tag, this);
   }
 
-  async removeTag(tagName: string) {
+  removeTag(tagName: string) {
     const tag = new ArchiveTag(tagName);
 
     return ArchiveStorage.removeTag(tag, this);
@@ -112,7 +113,7 @@ class ArchiveRecord implements IArchiveRecord {
     }
   }
 
-  async beginProcessing() {
+  beginProcessing() {
     this.status = ArchiveRecordStatus.processing;
 
     return ArchiveStorage.storeArchiveRecord(this);
@@ -145,4 +146,6 @@ class ArchiveRecord implements IArchiveRecord {
   }
 }
 
-export { ArchiveRecord, ArchiveRecordStatus };
+export {
+  ArchiveRecord, ArchiveRecordStatus,
+};

@@ -18,16 +18,57 @@
   "plugins": ["@typescript-eslint"],
   "root": true,
   "rules": {
+    "array-bracket-spacing": ["error", "always"],
+    "camelcase": "error",
+    "default-case-last": "error",
     "import/prefer-default-export": "off",
     "indent": ["error", 2, { "SwitchCase": 1 }],
+    "key-spacing": "error",
+    "keyword-spacing": "error",
+    "max-depth": "error",
     "max-len": ["error", { "comments": 80, "code": 120 }],
+    "newline-per-chained-call": "error",
+    "no-confusing-arrow": "error",
+    "no-else-return": "error",
+    "no-eval": "error",
+    "no-tabs": "error",
+    "no-throw-literal": "error",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "object-curly-newline": [
+      "error",
+      {
+        "ObjectExpression": { "multiline": true, "minProperties": 1 },
+        "ObjectPattern": { "multiline": true, "minProperties": 2 },
+        "ImportDeclaration": { "multiline": true, "minProperties": 2 },
+        "ExportDeclaration": { "multiline": true, "minProperties": 2 }
+      }
+    ],
+    "object-property-newline": "error",
+    "one-var-declaration-per-line": "error",
     "react/function-component-definition": [
       "error",
       {
         "namedComponents": "arrow-function",
         "unnamedComponents": "arrow-function"
       }
-    ]
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "require-await": "error",
+    "require-unicode-regexp": "error",
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+        "allowSeparatedGroups": false
+      }
+    ],
+    "sort-keys": "error",
+    "sort-vars": "error",
+    "vars-on-top": "error"
   },
   "settings": {
     "import/resolver": {

@@ -63,9 +63,7 @@ interface IStorageContainer {
   tags: IArchiveStorageClient,
 }
 
-export {
-  ArchiveRecordStatus,
-};
+export { ArchiveRecordStatus };
 
 export type {
   IArchiveProcessor,

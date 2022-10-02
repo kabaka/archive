@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+
 import { IArchiveTag } from 'archive-types';
+import { useLoaderData } from 'react-router-dom';
+// eslint-disable-next-line sort-imports
 import { ArchiveLink } from '../components/Link';
 
 export default () => {
   const tags: any = useLoaderData();
 
-  const [myTags, setMyTags]: [IArchiveTag[], any] = useState([]);
+  const [ myTags, setMyTags ]: [ IArchiveTag[], any ] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -17,7 +22,7 @@ export default () => {
 
       setMyTags(newTags);
     })();
-  }, [tags]);
+  }, [ tags ]);
 
   return (
     <>

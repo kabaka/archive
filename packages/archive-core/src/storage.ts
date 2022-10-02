@@ -1,5 +1,8 @@
-import { ArchiveRecordStatus, IArchiveRecord, IArchiveTag } from 'archive-types';
-// eslint-disable-next-line import/extensions
+import {
+  ArchiveRecordStatus,
+  IArchiveRecord,
+  IArchiveTag,
+} from 'archive-types';
 import { ArchiveConfiguration } from './config.js';
 import { S3Storage } from './storage/s3.js';
 

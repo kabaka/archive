@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
+import {
+  CommandBar,
+  ICommandBarItemProps,
+} from '@fluentui/react/lib/CommandBar';
 import { IButtonProps } from '@fluentui/react/lib/Button';
 import { setVirtualParent } from '@fluentui/dom-utilities';
 
@@ -7,20 +10,17 @@ const overflowProps: IButtonProps = { ariaLabel: 'More commands' };
 
 const items: ICommandBarItemProps[] = [
   {
+    iconProps: { iconName: 'GlobalNavButton' },
     key: 'nav',
     text: '',
-    iconProps: { iconName: 'GlobalNavButton' },
   },
   {
-    key: 'upload',
-    text: 'Upload',
     iconProps: { iconName: 'Upload' },
+    key: 'upload',
     subMenuProps: {
       items: [
         {
           key: 'uploadfile',
-          text: 'File',
-          preferMenuTargetAsEventTarget: true,
           onClick: (
             // eslint-disable-next-line max-len
             ev?: React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement> | undefined,
@@ -51,11 +51,11 @@ const items: ICommandBarItemProps[] = [
               }, 10000);
             });
           },
+          preferMenuTargetAsEventTarget: true,
+          text: 'File',
         },
         {
           key: 'uploadfolder',
-          text: 'Folder',
-          preferMenuTargetAsEventTarget: true,
           onClick: (
             // eslint-disable-next-line max-len
             ev?: React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement> | undefined,
@@ -88,54 +88,66 @@ const items: ICommandBarItemProps[] = [
               }, 10000);
             });
           },
+          preferMenuTargetAsEventTarget: true,
+          text: 'Folder',
         },
       ],
     },
+    text: 'Upload',
   },
   {
-    key: 'share',
-    text: 'Share',
     iconProps: { iconName: 'Share' },
+    key: 'share',
     onClick: () => console.log('Share'),
+    text: 'Share',
   },
   {
-    key: 'download',
-    text: 'Download',
     iconProps: { iconName: 'Download' },
+    key: 'download',
     onClick: () => console.log('Download'),
+    text: 'Download',
   },
 ];
 
 const overflowItems: ICommandBarItemProps[] = [
   {
-    key: 'move', text: 'Move to...', onClick: () => console.log('Move to'), iconProps: { iconName: 'MoveToFolder' },
+    iconProps: { iconName: 'MoveToFolder' },
+    key: 'move',
+    onClick: () => console.log('Move to'),
+    text: 'Move to...',
   },
   {
-    key: 'copy', text: 'Copy to...', onClick: () => console.log('Copy to'), iconProps: { iconName: 'Copy' },
+    iconProps: { iconName: 'Copy' },
+    key: 'copy',
+    onClick: () => console.log('Copy to'),
+    text: 'Copy to...',
   },
   {
-    key: 'rename', text: 'Rename...', onClick: () => console.log('Rename'), iconProps: { iconName: 'Edit' },
+    iconProps: { iconName: 'Edit' },
+    key: 'rename',
+    onClick: () => console.log('Rename'),
+    text: 'Rename...',
   },
 ];
 
 const farItems: ICommandBarItemProps[] = [
   {
-    key: 'tile',
-    text: 'Grid view',
     // This needs an ariaLabel since it's icon-only
     ariaLabel: 'Grid view',
     iconOnly: true,
     iconProps: { iconName: 'Tiles' },
+    key: 'tile',
     onClick: () => console.log('Tiles'),
+    text: 'Grid view',
   },
   {
-    key: 'info',
-    text: 'Info',
     // This needs an ariaLabel since it's icon-only
     ariaLabel: 'Info',
     iconOnly: true,
     iconProps: { iconName: 'Info' },
+    key: 'info',
     onClick: () => console.log('Info'),
+    text: 'Info',
   },
 ];
 
