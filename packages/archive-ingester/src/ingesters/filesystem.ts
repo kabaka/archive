@@ -20,15 +20,17 @@ export namespace ArchiveIngestorFilesystem {
       try {
         const mimeType = mime.getType(filePath);
 
-        record.metadata = {
-          mimeType,
-          originalFilePath: filePath,
-        };
-
         record.addTag(`mime-type: ${mimeType}`);
         record.addTag('Needs Review');
 
         record.data = await readFile(filePath);
+
+        record.metadata = {
+          created: Date.now(),
+          mimeType,
+          originalFilePath: filePath,
+          size: record.dataCache.length,
+        };
 
         Log.debug('ingestFile() prep done; uploading (processing) ', filePath);
 

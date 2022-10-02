@@ -193,11 +193,11 @@ export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props:
 
         return {
           id: record.id,
-          originalFilePath: metadata.originalFilePath,
           mimeType: metadata.mimeType,
-          size: 0,
-          modified: 0,
+          modified: metadata.modified,
           modifiedBy: '',
+          originalFilePath: metadata.originalFilePath,
+          size: 0,
         };
       }));
 
