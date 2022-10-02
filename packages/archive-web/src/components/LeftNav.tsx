@@ -30,9 +30,14 @@ const navLinkGroups: INavLinkGroup[] = [
         key: '/',
       },
       {
+        name: 'Records',
+        url: '/records',
+        key: 'records',
+      },
+      {
         name: 'Tags',
         url: '/tags',
-        key: '/tags',
+        key: 'tags',
       },
     ],
   },
@@ -41,37 +46,20 @@ const navLinkGroups: INavLinkGroup[] = [
 export const LeftNav: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // XXX this won't work in all cases
-  const [activeKey, setActiveKey] = useState(location.pathname);
+  const [activeKey, setActiveKey] = useState(location.pathname.split('/')[1]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onLinkClick = (ev?: React.MouseEvent<HTMLElement>, item?: INavLink) => {
     window.console.log('LeftNav.onLinkClick', ev, item);
 
     if (ev) {
-      // ev.nativeEvent.preventDefault();
       ev.preventDefault();
     }
 
     if (item && item.key) {
       setActiveKey(item.key);
-      try {
-        navigate(item.url);
-      } catch (err) {
-        // eslint-disable-next-line no-alert
-        alert(`${err}\n${err.stack}\n${err.line}`);
-      }
-
-      // eslint-disable-next-line no-alert
-      // alert(item.url);
+      navigate(item.url);
     }
   };
-
-  /*
-  useEffect(() => {
-    navigate(activeKey);
-  }, [activeKey, navigate]);
-  */
 
   return (
     <Nav

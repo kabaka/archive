@@ -46,6 +46,10 @@ const router = createBrowserRouter([
         },
       },
       {
+        path: 'records',
+        element: <p>hello</p>,
+      },
+      {
         path: 'records/:id',
         element: <Record />,
         loader: async ({ params }) => {
