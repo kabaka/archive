@@ -1,4 +1,5 @@
-import React from 'react';
+import { IArchiveTag } from 'archive-types';
+import React, { useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 // import { IArchiveRecord } from 'archive-types';
@@ -6,6 +7,21 @@ import { useLoaderData } from 'react-router-dom';
 export default () => {
   const record: any = useLoaderData();
   const { metadata } = record;
+
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const myTags = await record.tags;
+
+      const newTags = await Promise.all(myTags.map(async (tag) => ({
+        name: await tag.name,
+        slug: tag.slug,
+      })));
+
+      setTags(newTags);
+    })();
+  }, [record]);
 
   return (
     <>
@@ -28,6 +44,13 @@ export default () => {
           </>
         ))}
       </dl>
+      <hr />
+      <h3>Tags</h3>
+      <ul>
+        {tags.map((tag: IArchiveTag) => (
+          <li key={tag.slug}>{tag.name}</li>
+        ))}
+      </ul>
       <hr />
       <h3>Raw Metadata</h3>
       <pre>{JSON.stringify(metadata)}</pre>

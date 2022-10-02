@@ -3,22 +3,31 @@ import { Slug } from './slug.js';
 import { ArchiveStorage } from './storage.js';
 
 class ArchiveTag extends Slug implements IArchiveTag {
-  name: string;
+  nameCache: string;
 
   records: IArchiveRecord[];
 
   recordsExpiration: Number = 0;
 
-  constructor(name: string) {
+  constructor(name?: string, slug?: string) {
     super();
 
-    this.name = name;
+    if (slug) {
+      this.slug = slug;
+    } else {
+      this.nameCache = name;
+      this.slug = this.convertToSlug(name);
+    }
+
     this.records = [];
-    this.slug = this.convertToSlug(this.name);
   }
 
   get partitionName() {
     return this.slug.slice(0, 2);
+  }
+
+  get name() {
+    return ArchiveStorage.getTagName(this);
   }
 
   async getRecords() {
@@ -30,7 +39,7 @@ class ArchiveTag extends Slug implements IArchiveTag {
   }
 
   toString() {
-    return this.name;
+    return this.slug;
   }
 }
 

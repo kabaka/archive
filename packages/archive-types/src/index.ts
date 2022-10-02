@@ -26,7 +26,6 @@ interface IArchiveRecordInput {
   data: any;
   id: string;
   metadata: any;
-  mimeType: string;
   status: ArchiveRecordStatus;
 }
 

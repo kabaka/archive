@@ -19,6 +19,7 @@ export namespace ArchiveStorage {
   export const tags = createStorage(ArchiveConfiguration.storage.tags);
 
   export const getTags = (prefix?: string) => tags.getTags(prefix);
+  export const getTagName = (tag: IArchiveTag | string): Promise<string> => tags.getTagName(tag);
 
   export const addTag = async (tag: IArchiveTag, record: IArchiveRecord) => {
     await tags.addTag(tag, record);
@@ -28,9 +29,9 @@ export namespace ArchiveStorage {
     await tags.removeTag(tag, record);
   };
 
-  export const getTagRecords = async (tag: IArchiveTag) => {
-    await tags.getTagRecords(tag);
-  };
+  export const getRecordTags = (record: IArchiveRecord | string) => tags.getRecordTags(record);
+
+  export const getTagRecords = (tag: IArchiveTag) => tags.getTagRecords(tag);
 
   // eslint-disable-next-line max-len
   export const getArchiveRecord = async (recordId: string, status: ArchiveRecordStatus = ArchiveRecordStatus.processed) => {

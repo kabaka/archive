@@ -17,7 +17,7 @@ class ArchiveRecord implements IArchiveRecord {
 
   status: ArchiveRecordStatus;
 
-  tags: string[];
+  // tags: string[];
 
   constructor(record: IArchiveRecord | IArchiveRecordInput | string | null = null) {
     if (typeof record === 'string') {
@@ -29,7 +29,7 @@ class ArchiveRecord implements IArchiveRecord {
       this.status = record?.status ?? ArchiveRecordStatus.new;
     }
 
-    this.tags = [];
+    // this.tags = [];
   }
 
   /*
@@ -82,6 +82,10 @@ class ArchiveRecord implements IArchiveRecord {
     this.metadataCache = metadata;
 
     this.flushMetadata();
+  }
+
+  get tags() {
+    return ArchiveStorage.getRecordTags(this);
   }
 
   async addTag(tagName: string) {

@@ -50,24 +50,6 @@ const router = createBrowserRouter([
       {
         path: 'records',
         element: <Records />,
-        loader: async ({ params }) => {
-          const { tags, merge } = params;
-
-          switch (merge) {
-            case 'and':
-              throw new Error('\'and\' merge not yet implemented');
-              break;
-            case 'or':
-            default:
-              if (!tags) {
-                return [];
-              }
-
-              return tags.split(',').map((tag) => (
-                ArchiveStorage.getTagRecords(new ArchiveTag(tag))
-              ));
-          }
-        },
       },
       {
         path: 'records/:id',

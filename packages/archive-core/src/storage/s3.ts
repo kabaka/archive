@@ -63,31 +63,18 @@ class S3Storage implements IArchiveStorageClient {
 
   // eslint-disable-next-line class-methods-use-this
   streamToString(stream): Promise<string> {
-    // window.alert(stream.read);
     return new Promise((resolve, reject) => {
       const chunks = [];
 
       const processChunk = ({ done, value }): any => {
-        // alert('starting');
-
         if (done) {
-          try {
-            const result = Buffer.concat(chunks).toString('utf8');
+          const result = Buffer.concat(chunks).toString('utf8');
+          resolve(result);
 
-            // window.alert(`done: ${result}`);
-
-            resolve(result);
-
-            return;
-          } catch (err) {
-            // eslint-disable-next-line no-alert
-            alert(err);
-          }
+          return;
         }
 
         chunks.push(value);
-
-        // alert(`${done} :: ${chunks.length}: ${chunks.join(', ')}`);
 
         // eslint-disable-next-line consistent-return
         return stream.read().then(processChunk);
@@ -143,7 +130,6 @@ class S3Storage implements IArchiveStorageClient {
       id: recordId,
       data: response.Body,
       metadata: await ArchiveStorage.getArchiveRecordMetadata(recordId),
-      mimeType: response.ContentType,
       status: null, // XXX no way to determine this right now
     });
   }
@@ -161,17 +147,18 @@ class S3Storage implements IArchiveStorageClient {
     return this.streamToString(response.Body);
   }
 
-  async getTagName(tag: IArchiveTag) {
+  async getTagName(tag: IArchiveTag | string): Promise<string> {
+    const myTag = typeof tag === 'string' ? new ArchiveTag(tag) : tag;
     const params = {
       Bucket: this.configuration.bucket,
-      Key: `tags/${tag.partitionName}/${tag.slug}`,
+      Key: `tags/${myTag.partitionName}/${myTag.slug}`,
     };
 
     const command = new GetObjectCommand(params);
 
     const response = await this.s3.send(command);
 
-    return this.streamToString(response.Body);
+    return this.streamToString(response.Body.getReader());
   }
 
   async createMetadata(record: IArchiveRecord) {
@@ -196,22 +183,24 @@ class S3Storage implements IArchiveStorageClient {
     const command = new GetObjectCommand(params);
 
     const response = await this.s3.send(command);
-    // alert(JSON.stringify(Object.keys(response.Body)));
+
     try {
       const metadata = await this.streamToString(response.Body.getReader());
 
-      // alert(`metadata: ${metadata.toString()}`);
       return JSON.parse(metadata);
     } catch (err) {
       // alert(err);
     }
 
-    // XXX
-    return '';
+    return {};
   }
 
   async getTags(prefix?: string) {
+    const tags = [];
+
     let fullPrefix = 'tags/';
+    let truncated = true;
+    let ContinuationToken: string;
 
     if (prefix) {
       if (prefix.length < 2) {
@@ -226,15 +215,11 @@ class S3Storage implements IArchiveStorageClient {
       Prefix: fullPrefix,
     };
 
-    // borrowed from https://docs.aws.amazon.com/AmazonS3/latest/userguide/example_s3_ListObjects_section.html
-
-    const tags = [];
-
-    let truncated = true;
-    let ContinuationToken: string;
-
     while (truncated) {
       try {
+        // We have to disable no-await-in-loop since each loop is a serial
+        // read. That is, it cannot be parallel.
+
         // eslint-disable-next-line no-await-in-loop
         const response = await this.s3.send(new ListObjectsV2Command(params));
 
@@ -261,21 +246,68 @@ class S3Storage implements IArchiveStorageClient {
     return tags;
   }
 
-  async getTagRecords(tag: IArchiveTag) {
-    const params: ListObjectsV2CommandInput = {
-      Bucket: this.configuration.bucket,
-      Prefix: `tagged/${tag.partitionName}/${tag.slug}`,
-    };
-
-    // borrowed from https://docs.aws.amazon.com/AmazonS3/latest/userguide/example_s3_ListObjects_section.html
-
-    const records = [];
+  async getRecordTags(record: IArchiveRecord | string) {
+    const tags = [];
+    const recordId = typeof record === 'string' ? record : record.id;
+    const prefix = `records-to-tags/${recordId}`;
 
     let truncated = true;
-    let ContinuationToken;
+    let ContinuationToken: string;
+
+    const params: ListObjectsV2CommandInput = {
+      Bucket: this.configuration.bucket,
+      Prefix: prefix,
+    };
 
     while (truncated) {
       try {
+        // We have to disable no-await-in-loop since each loop is a serial
+        // read. That is, it cannot be parallel.
+
+        // eslint-disable-next-line no-await-in-loop
+        const response = await this.s3.send(new ListObjectsV2Command(params));
+
+        // eslint-disable-next-line @typescript-eslint/no-loop-func
+        response.Contents.forEach((item) => {
+          // XXX this doesn't expose the tags's name
+          const tag = new ArchiveTag(item.Key.split('/')[2]);
+
+          tags.push(tag);
+        });
+
+        truncated = response.IsTruncated;
+
+        if (truncated) {
+          ContinuationToken = response.Contents.slice(-1)[0].Key;
+
+          params.ContinuationToken = ContinuationToken;
+        }
+      } catch (err) {
+        // Log.error(err);
+        truncated = false;
+        throw err;
+      }
+    }
+
+    return tags;
+  }
+
+  async getTagRecords(tag: IArchiveTag): Promise<IArchiveRecord[]> {
+    const params: ListObjectsV2CommandInput = {
+      Bucket: this.configuration.bucket,
+      Prefix: `tags-to-records/${tag.partitionName}/${tag.slug}/`,
+    };
+
+    const records: IArchiveRecord[] = [];
+
+    let truncated = true;
+    let ContinuationToken: any;
+
+    while (truncated) {
+      try {
+        // We have to disable no-await-in-loop since each loop is a serial
+        // read. That is, it cannot be parallel.
+
         // eslint-disable-next-line no-await-in-loop
         const response = await this.s3.send(new ListObjectsV2Command(params));
 
@@ -319,14 +351,25 @@ class S3Storage implements IArchiveStorageClient {
     // eslint-disable-next-line no-underscore-dangle
     this.createTag(tag);
 
-    const params = {
+    let params = {
       Body: '',
       Bucket: this.configuration.bucket,
       ContentType: 'text/plain',
-      Key: `tagged/${tag.partitionName}/${tag.slug}/${record.id}`,
+      Key: `tags-to-records/${tag.partitionName}/${tag.slug}/${record.id}`,
     };
 
-    const command = new PutObjectCommand(params);
+    let command = new PutObjectCommand(params);
+
+    await this.s3.send(command);
+
+    params = {
+      Body: '',
+      Bucket: this.configuration.bucket,
+      ContentType: 'text/plain',
+      Key: `records-to-tags/${record.id}/${tag.slug}`,
+    };
+
+    command = new PutObjectCommand(params);
 
     await this.s3.send(command);
   }

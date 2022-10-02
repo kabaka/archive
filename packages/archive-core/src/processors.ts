@@ -21,11 +21,11 @@ export namespace ArchiveProcessor {
   };
 
   export const processRecord = (record: IArchiveRecord) => {
-    if (map[record.mimeType] === undefined) {
-      throw new Error(`no processor for ${record.mimeType}`);
+    if (map[record.metadata.mimeType] === undefined) {
+      throw new Error(`no processor for ${record.metadata.mimeType}`);
     }
 
-    map[record.mimeType].forEach((processor) => {
+    map[record.metadata.mimeType].forEach((processor) => {
       processor.processRecord(record);
     });
   };

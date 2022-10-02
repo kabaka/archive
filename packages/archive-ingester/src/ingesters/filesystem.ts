@@ -26,6 +26,7 @@ export namespace ArchiveIngestorFilesystem {
         };
 
         record.addTag(`mime-type: ${mimeType}`);
+        record.addTag('Needs Review');
 
         record.data = await readFile(filePath);
 
