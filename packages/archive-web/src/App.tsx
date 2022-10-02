@@ -15,6 +15,7 @@ import { AppContainer } from './components/AppContainer';
 import Tags from './pages/tags';
 import Tag from './pages/tag';
 import Record from './pages/record';
+import Records from './pages/records';
 
 const myTheme: PartialTheme = {
   palette: {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
       {
         path: 'tags',
         element: <Tags />,
-        loader: ArchiveStorage.getTags,
+        loader: () => ArchiveStorage.getTags(),
       },
       {
         path: 'tags/:slug',
@@ -42,12 +43,31 @@ const router = createBrowserRouter([
           const tag = new ArchiveTag(params.slug);
 
           const records = await tag.getRecords();
+
           return records;
         },
       },
       {
         path: 'records',
-        element: <p>hello</p>,
+        element: <Records />,
+        loader: async ({ params }) => {
+          const { tags, merge } = params;
+
+          switch (merge) {
+            case 'and':
+              throw new Error('\'and\' merge not yet implemented');
+              break;
+            case 'or':
+            default:
+              if (!tags) {
+                return [];
+              }
+
+              return tags.split(',').map((tag) => (
+                ArchiveStorage.getTagRecords(new ArchiveTag(tag))
+              ));
+          }
+        },
       },
       {
         path: 'records/:id',

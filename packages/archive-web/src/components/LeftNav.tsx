@@ -49,8 +49,6 @@ export const LeftNav: React.FunctionComponent = () => {
   const [activeKey, setActiveKey] = useState(location.pathname.split('/')[1]);
 
   const onLinkClick = (ev?: React.MouseEvent<HTMLElement>, item?: INavLink) => {
-    window.console.log('LeftNav.onLinkClick', ev, item);
-
     if (ev) {
       ev.preventDefault();
     }

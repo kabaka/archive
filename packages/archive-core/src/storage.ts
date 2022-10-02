@@ -18,7 +18,7 @@ export namespace ArchiveStorage {
   export const processing = createStorage(ArchiveConfiguration.storage.processing);
   export const tags = createStorage(ArchiveConfiguration.storage.tags);
 
-  export const getTags = () => tags.getTags();
+  export const getTags = (prefix?: string) => tags.getTags(prefix);
 
   export const addTag = async (tag: IArchiveTag, record: IArchiveRecord) => {
     await tags.addTag(tag, record);

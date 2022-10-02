@@ -239,6 +239,7 @@ class S3Storage implements IArchiveStorageClient {
         const response = await this.s3.send(new ListObjectsV2Command(params));
 
         response.Contents.forEach((item) => {
+          // XXX this doesn't expose the tags's name
           const tag = new ArchiveTag(item.Key.split('/')[2]);
           tags.push(tag);
         });
