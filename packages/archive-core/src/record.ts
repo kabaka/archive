@@ -136,6 +136,7 @@ class ArchiveRecord implements IArchiveRecord {
   }
 
   async flushMetadata() {
+    this.metadataCache.modified = Date.now();
     await ArchiveStorage.storeArchiveRecordMetadata(this);
   }
 
