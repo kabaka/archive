@@ -17,7 +17,7 @@
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@fluentui/dom-utilities": "^2.2.2",
     "@fluentui/font-icons-mdl2": "^8.4.13",
-    "@fluentui/react": "^8.97.0",
+    "@fluentui/react": "^8.97.1",
     "@fluentui/react-file-type-icons": "^8.7.8",
     "@fluentui/react-hooks": "^8.6.11",
     "@testing-library/dom": ">=8.18.1",
