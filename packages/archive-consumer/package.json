@@ -1,5 +1,5 @@
 {
-  "name": "archive-ingester",
+  "name": "archive-consumer",
   "version": "0.1.0",
   "license": "MIT",
   "private": true,

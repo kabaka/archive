@@ -89,24 +89,24 @@ export namespace ArchiveIngestorFilesystem {
     return new Promise(ingest);
   };
 
-  export const scan = (ingester) => {
-    Log.debug('scan()', ingester);
+  export const scan = (consumer) => {
+    Log.debug('scan()', consumer);
     try {
-      ingestDirectory(ingester.dir);
+      ingestDirectory(consumer.dir);
     } catch (err) {
       Log.error('Error while checking for new files:', err);
     }
 
-    setTimeout(scan, ingester.interval, ingester);
+    setTimeout(scan, consumer.interval, consumer);
   };
 
   export const startScanning = () => {
-    ArchiveConfiguration.ingestion.forEach((ingester) => {
-      if (ingester.type !== 'filesystem') {
+    ArchiveConfiguration.ingestion.forEach((consumer) => {
+      if (consumer.type !== 'filesystem') {
         return;
       }
 
-      scan(ingester);
+      scan(consumer);
     });
   };
 }

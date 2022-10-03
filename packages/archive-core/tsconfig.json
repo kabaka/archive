@@ -7,6 +7,6 @@
   },
   "references": [
     { "path": "../archive-types" },
-    { "path": "../archive-ingester" }
+    { "path": "../archive-consumer" }
   ]
 }

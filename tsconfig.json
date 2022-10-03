@@ -1,7 +1,7 @@
 {
   "references": [
     { "path": "packages/archive-core" },
-    { "path": "packages/archive-ingester" },
+    { "path": "packages/archive-consumer" },
     { "path": "packages/archive-types" },
     { "path": "packages/archive-web" }
   ],

@@ -3,7 +3,7 @@ import {
   ArchiveStorage,
   Log,
 } from 'archive-core';
-import { ArchiveIngestorFilesystem } from './ingesters/filesystem.js';
+import { ArchiveIngestorFilesystem } from './consumers/filesystem.js';
 
 Log.info('Archive is starting.');
 

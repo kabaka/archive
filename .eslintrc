@@ -10,7 +10,7 @@
     "project": [
       "tsconfig.json",
       "packages/archive-core/tsconfig.json",
-      "packages/archive-ingester/tsconfig.json",
+      "packages/archive-consumer/tsconfig.json",
       "packages/archive-types/tsconfig.json",
       "packages/archive-web/tsconfig.json"
     ]
@@ -20,6 +20,7 @@
   "rules": {
     "array-bracket-spacing": ["error", "always"],
     "camelcase": "error",
+    "computed-property-spacing": ["error", "never"],
     "default-case-last": "error",
     "import/prefer-default-export": "off",
     "indent": ["error", 2, { "SwitchCase": 1 }],
@@ -29,6 +30,7 @@
     "max-len": ["error", { "comments": 80, "code": 120 }],
     "newline-per-chained-call": "error",
     "no-confusing-arrow": "error",
+    "no-continue": "off",
     "no-else-return": "error",
     "no-eval": "error",
     "no-tabs": "error",
