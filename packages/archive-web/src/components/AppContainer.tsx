@@ -7,7 +7,7 @@ import {
 import { Outlet } from 'react-router-dom';
 // eslint-disable-next-line sort-imports
 import { AppCommandBar } from './AppCommandBar';
-import { LeftNav } from './LeftNav';
+import { TagFilter } from './TagFilter';
 
 export const AppContainer: React.FunctionComponent = () => (
   <Stack verticalFill>
@@ -17,7 +17,7 @@ export const AppContainer: React.FunctionComponent = () => (
     <Stack.Item>
       <Stack horizontal verticalFill>
         <Stack.Item verticalFill>
-          <LeftNav />
+          <TagFilter />
         </Stack.Item>
         <Stack.Item>
           <Stack>

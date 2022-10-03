@@ -118,8 +118,9 @@ export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props:
   const [ isModalSelection, {
     setTrue: enableModalSelection, setFalse: disableModalSelection,
   } ] = useBoolean(false); // XXX
+  const [ previousProps, setPreviousProps ] = useState(props);
 
-  const [ columns, setColumns ]: [IColumn[], any] = useState([
+  const [ columns, setColumns ]: [ IColumn[], any ] = useState([
     {
       ariaLabel: 'Column operations for File type, Press to sort on File type',
       className: classNames.fileIconCell,
@@ -196,6 +197,18 @@ export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props:
     (async () => {
       const { records } = props;
 
+      if (previousProps.records === records) {
+        return;
+      }
+
+      setPreviousProps(props);
+
+      if (!records || records.length === 0) {
+        setAllItems([]);
+        setItems([]);
+        return;
+      }
+
       const result = await Promise.all(records.map(async (record: IArchiveRecord) => {
         const metadata = await record.metadata;
 
@@ -212,7 +225,7 @@ export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props:
       setAllItems(result);
       setItems(result);
     })();
-  }, [ props ]);
+  }, [ props, previousProps ]);
 
   useEffect(() => {
     const selectionCount = selection.getSelectedCount();

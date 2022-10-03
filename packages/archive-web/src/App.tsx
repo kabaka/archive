@@ -1,26 +1,28 @@
+import './App.css';
 import * as React from 'react';
 import {
-  createBrowserRouter,
-  RouterProvider,
-} from 'react-router-dom';
+  ArchiveStorage,
+  ArchiveTag,
+} from 'archive-core';
 import {
   PartialTheme,
   ThemeProvider,
 } from '@fluentui/react';
+import {
+  RouterProvider,
+  createBrowserRouter,
+} from 'react-router-dom';
 
-import { ArchiveStorage, ArchiveTag } from 'archive-core';
-
-import './App.css';
 import { AppContainer } from './components/AppContainer';
-import Tags from './pages/tags';
-import Tag from './pages/tag';
 import Record from './pages/record';
 import Records from './pages/records';
+import Tag from './pages/tag';
+import Tags from './pages/tags';
 
 const myTheme: PartialTheme = {
   palette: {
-    themePrimary: '#0f8387',
     themeDark: '#324c4d',
+    themePrimary: '#0f8387',
   },
 };
 
@@ -28,16 +30,13 @@ const myTheme: PartialTheme = {
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <AppContainer />,
     children: [
       {
-        path: 'tags',
         element: <Tags />,
         loader: () => ArchiveStorage.getTags(),
+        path: 'tags',
       },
       {
-        path: 'tags/:slug',
         element: <Tag />,
         loader: async ({ params }) => {
           const tag = new ArchiveTag(params.slug);
@@ -46,21 +45,24 @@ const router = createBrowserRouter([
 
           return records;
         },
+        path: 'tags/:slug',
       },
       {
-        path: 'records',
         element: <Records />,
+        path: 'records',
       },
       {
-        path: 'records/:id',
         element: <Record />,
-        loader: async ({ params }) => {
+        loader: ({ params }) => {
           const record = ArchiveStorage.getArchiveRecord(params.id);
 
           return record;
         },
+        path: 'records/:id',
       },
     ],
+    element: <AppContainer />,
+    path: '/',
   },
 ]);
 
