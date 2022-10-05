@@ -35,7 +35,7 @@ interface IArchiveRecordRow {
 function copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boolean): T[] {
   const key = columnKey as keyof T;
   return items.slice(0).sort((a: T, b: T) => (
-    (isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
+    (isSortedDescending ? a[ key ] < b[ key ] : a[ key ] > b[ key ]) ? 1 : -1));
 }
 
 const onRenderIcon = () => (
@@ -235,7 +235,7 @@ export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props:
         setSelectionDetails('No items selected');
         break;
       case 1:
-        setSelectionDetails(`1 item selected: ${(selection.getSelection()[0] as IArchiveRecord).id} `);
+        setSelectionDetails(`1 item selected: ${(selection.getSelection()[ 0 ] as IArchiveRecord).id} `);
         break;
       default:
         setSelectionDetails(`${selectionCount} items selected`);
@@ -245,7 +245,7 @@ export const RecordsTable: React.FunctionComponent<IRecordsTableProps> = (props:
 
   const onColumnHeaderClick = (ev: React.MouseEvent<HTMLElement>, column: IColumn): void => {
     const newColumns: IColumn[] = columns.slice();
-    const currColumn: IColumn = newColumns.filter((currCol) => column.key === currCol.key)[0];
+    const currColumn: IColumn = newColumns.filter((currCol) => column.key === currCol.key)[ 0 ];
 
     newColumns.forEach((newCol: IColumn) => {
       if (newCol === currColumn) {

@@ -18,7 +18,7 @@ initializeIcons('/static/fonts/font-icons-mdl2/');
 // Inject some global styles
 mergeStyles({
   ':global(body,html,#root)': {
-    // height: '100vh',
+    height: '100vh',
     margin: 0,
     padding: 0,
     // width: '100vw',

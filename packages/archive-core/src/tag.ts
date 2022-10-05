@@ -30,7 +30,12 @@ class ArchiveTag extends Slug implements IArchiveTag {
   }
 
   get name() {
-    return ArchiveStorage.getTagName(this);
+    return ArchiveStorage.getTagName(this.slug);
+  }
+
+  set name(newName: any) {
+    this.nameCache = newName;
+    ArchiveStorage.createTag(this);
   }
 
   async getRecords() {

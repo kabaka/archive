@@ -15,11 +15,13 @@ interface IArchiveProcessor {
 }
 
 interface IArchiveRecord {
+  addTag(tagName: string);
   data: any;
   id: string;
   metadata: any;
+  removeTag(tagName: string);
   status: ArchiveRecordStatus;
-  addTag(tagName: string);
+  tags: Promise<IArchiveTag[]>;
 }
 
 interface IArchiveRecordInput {
@@ -34,6 +36,7 @@ interface IArchiveStorageClient {
   addTag(tag: IArchiveTag, record: IArchiveRecord),
   createMetadata(record: IArchiveRecord),
   createRecord(record: IArchiveRecord),
+  createTag(tag: IArchiveTag): void,
   destroyRecord(record: string | IArchiveRecord),
   getRecord(recordId: string),
   getTagRecords(tag: IArchiveTag): Promise<IArchiveRecord[]>,
@@ -43,7 +46,8 @@ interface IArchiveStorageClient {
 }
 
 interface IArchiveTag {
-  name: string;
+  name: any;
+  nameCache: string;
   partitionName: string;
   records: IArchiveRecord[];
   slug: string;

@@ -7,6 +7,7 @@ import {
 import { ArchiveStorage } from 'archive-core';
 import { IArchiveTag } from 'archive-types';
 import { useEffect } from 'react';
+import { useId } from '@fluentui/react-hooks';
 import { useSearchParams } from 'react-router-dom';
 
 export interface ITagPickerProps extends IBasePickerProps<ITag> { }
@@ -51,6 +52,7 @@ const filterSuggestedTags = async (filterText: string, selectedTags: ITag[]): Pr
 };
 
 export const TagFilter: React.FunctionComponent = () => {
+  const pickerId = useId('tag-filter-picker');
   const [ search, setSearch ] = useSearchParams();
 
   const onChange = (items: ITag[]) => {
@@ -73,14 +75,15 @@ export const TagFilter: React.FunctionComponent = () => {
   }, [ search ]);
 
   return (
-    <>
-      <strong>Tag Filter</strong>
-      <TagPicker
-        onChange={onChange}
-        onResolveSuggestions={filterSuggestedTags}
-        onRenderSuggestionsItem={onRenderSuggestionsItem}
-        onRenderItem={onRenderItem}
-      />
-    </>
+    <TagPicker
+      inputProps={{
+        id: pickerId,
+        placeholder: 'Search by tag',
+      }}
+      onChange={onChange}
+      onResolveSuggestions={filterSuggestedTags}
+      onRenderSuggestionsItem={onRenderSuggestionsItem}
+      onRenderItem={onRenderItem}
+    />
   );
 };

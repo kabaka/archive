@@ -150,10 +150,11 @@ class S3Storage implements IArchiveStorageClient {
 
     const response = await this.s3.send(command);
 
-    return this.streamToString(response.Body);
+    // TODO: support more than tezt
+    return this.streamToString(response.Body.getReader());
   }
 
-  async getTagName(tag: IArchiveTag | string): Promise<string> {
+  async getTagName(tag: IArchiveTag | string) {
     const myTag = typeof tag === 'string' ? new ArchiveTag(tag) : tag;
     const params = {
       Bucket: this.configuration.bucket,
@@ -229,9 +230,12 @@ class S3Storage implements IArchiveStorageClient {
         // eslint-disable-next-line no-await-in-loop
         const response = await this.s3.send(new ListObjectsV2Command(params));
 
+        if (!response.Contents) {
+          break;
+        }
+
         response.Contents.forEach((item) => {
-          // XXX this doesn't expose the tags's name
-          const tag = new ArchiveTag(item.Key.split('/')[2]);
+          const tag = new ArchiveTag(null, item.Key.split('/')[2]);
           tags.push(tag);
         });
 
@@ -252,7 +256,7 @@ class S3Storage implements IArchiveStorageClient {
     return tags;
   }
 
-  async getRecordTags(record: IArchiveRecord | string) {
+  async getRecordTags(record: IArchiveRecord | string): Promise<IArchiveRecord[]> {
     const tags = [];
     const recordId = typeof record === 'string' ? record : record.id;
     const prefix = `records-to-tags/${recordId}`;
@@ -275,8 +279,7 @@ class S3Storage implements IArchiveStorageClient {
 
         // eslint-disable-next-line @typescript-eslint/no-loop-func
         response.Contents.forEach((item) => {
-          // XXX this doesn't expose the tags's name
-          const tag = new ArchiveTag(item.Key.split('/')[2]);
+          const tag = new ArchiveTag(null, item.Key.split('/')[2]);
 
           tags.push(tag);
         });
@@ -339,10 +342,9 @@ class S3Storage implements IArchiveStorageClient {
     return records;
   }
 
-  // eslint-disable-next-line no-underscore-dangle
-  private createTag(tag: IArchiveTag) {
+  createTag(tag: IArchiveTag) {
     const params = {
-      Body: tag.name,
+      Body: tag.nameCache,
       Bucket: this.configuration.bucket,
       ContentType: 'text/plain',
       Key: `tags/${tag.partitionName}/${tag.slug}`,
@@ -381,12 +383,21 @@ class S3Storage implements IArchiveStorageClient {
   }
 
   removeTag(tag: IArchiveTag, record: IArchiveRecord) {
-    const params = {
+    let params = {
       Bucket: this.configuration.bucket,
-      Key: `tags/${tag.partitionName}/${tag.slug}/${record.id}`,
+      Key: `tag-to-records/${tag.partitionName}/${tag.slug}/${record.id}`,
     };
 
-    const command = new DeleteObjectCommand(params);
+    let command = new DeleteObjectCommand(params);
+
+    this.s3.send(command);
+
+    params = {
+      Bucket: this.configuration.bucket,
+      Key: `records-to-tags/${record.id}/${tag.slug}`,
+    };
+
+    command = new DeleteObjectCommand(params);
 
     this.s3.send(command);
   }

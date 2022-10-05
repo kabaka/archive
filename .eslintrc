@@ -20,7 +20,7 @@
   "rules": {
     "array-bracket-spacing": ["error", "always"],
     "camelcase": "error",
-    "computed-property-spacing": ["error", "never"],
+    "computed-property-spacing": ["error", "always"], // TODO fix VS Code to stop doing this
     "default-case-last": "error",
     "import/prefer-default-export": "off",
     "indent": ["error", 2, { "SwitchCase": 1 }],

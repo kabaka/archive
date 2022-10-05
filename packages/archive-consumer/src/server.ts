@@ -14,7 +14,7 @@ ArchiveProcessor.initialize();
 Log.info('Initializing filesystem watcher.');
 
 // TODO make this look more like processors.
-ArchiveIngestorFilesystem.startScanning();
+ArchiveIngestorFilesystem.start();
 
 const myGetTags = async () => {
   const tags = await ArchiveStorage.getTags();

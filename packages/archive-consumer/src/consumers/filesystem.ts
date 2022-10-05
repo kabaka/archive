@@ -14,9 +14,9 @@ export namespace ArchiveIngestorFilesystem {
 
   const ingestFile = (filePath: string) => {
     const ingest = async (resolve, reject) => {
-      if (ingesting[filePath] !== undefined) return;
+      if (ingesting[ filePath ] !== undefined) return;
 
-      ingesting[filePath] = true;
+      ingesting[ filePath ] = true;
       Log.debug('ingestFile() starting', filePath);
 
       const record = new ArchiveRecord();
@@ -56,7 +56,7 @@ export namespace ArchiveIngestorFilesystem {
         Log.debug('ingestFile() finished; deleting local file', filePath);
 
         await unlink(filePath);
-        delete ingesting[filePath];
+        delete ingesting[ filePath ];
         resolve(record);
       } catch (err) {
         record.status = ArchiveRecordStatus.error;
@@ -100,7 +100,7 @@ export namespace ArchiveIngestorFilesystem {
     setTimeout(scan, consumer.interval, consumer);
   };
 
-  export const startScanning = () => {
+  export const start = () => {
     ArchiveConfiguration.ingestion.forEach((consumer) => {
       if (consumer.type !== 'filesystem') {
         return;

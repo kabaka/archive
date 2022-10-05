@@ -2,19 +2,16 @@ import * as React from 'react';
 import {
   CommandBar,
   ICommandBarItemProps,
-} from '@fluentui/react/lib/CommandBar';
-import { IButtonProps } from '@fluentui/react/lib/Button';
+} from '@fluentui/react';
 import { setVirtualParent } from '@fluentui/dom-utilities';
+import { useBoolean } from '@fluentui/react-hooks';
+import { useState } from 'react';
+// eslint-disable-next-line sort-imports
+import { LeftNav } from './LeftNav';
 
-const overflowProps: IButtonProps = { ariaLabel: 'More commands' };
-
-const items: ICommandBarItemProps[] = [
+const farItems: ICommandBarItemProps[] = [
   {
-    iconProps: { iconName: 'GlobalNavButton' },
-    key: 'nav',
-    text: '',
-  },
-  {
+    ariaLabel: 'Upload',
     iconProps: { iconName: 'Upload' },
     key: 'upload',
     subMenuProps: {
@@ -95,70 +92,31 @@ const items: ICommandBarItemProps[] = [
     },
     text: 'Upload',
   },
-  {
-    iconProps: { iconName: 'Share' },
-    key: 'share',
-    onClick: () => console.log('Share'),
-    text: 'Share',
-  },
-  {
-    iconProps: { iconName: 'Download' },
-    key: 'download',
-    onClick: () => console.log('Download'),
-    text: 'Download',
-  },
 ];
 
-const overflowItems: ICommandBarItemProps[] = [
-  {
-    iconProps: { iconName: 'MoveToFolder' },
-    key: 'move',
-    onClick: () => console.log('Move to'),
-    text: 'Move to...',
-  },
-  {
-    iconProps: { iconName: 'Copy' },
-    key: 'copy',
-    onClick: () => console.log('Copy to'),
-    text: 'Copy to...',
-  },
-  {
-    iconProps: { iconName: 'Edit' },
-    key: 'rename',
-    onClick: () => console.log('Rename'),
-    text: 'Rename...',
-  },
-];
+export const AppCommandBar: React.FunctionComponent = () => {
+  const [ isNavOpen, { toggle: toggleNav } ] = useBoolean(false);
+  const [ items ] = useState([
+    {
+      ariaLabel: 'Navigation',
+      // iconOnly: true,
+      iconProps: { iconName: 'GlobalNavButton' },
+      key: 'nav',
+      onClick: toggleNav,
+      text: 'Archive',
+    },
+  ]);
 
-const farItems: ICommandBarItemProps[] = [
-  {
-    // This needs an ariaLabel since it's icon-only
-    ariaLabel: 'Grid view',
-    iconOnly: true,
-    iconProps: { iconName: 'Tiles' },
-    key: 'tile',
-    onClick: () => console.log('Tiles'),
-    text: 'Grid view',
-  },
-  {
-    // This needs an ariaLabel since it's icon-only
-    ariaLabel: 'Info',
-    iconOnly: true,
-    iconProps: { iconName: 'Info' },
-    key: 'info',
-    onClick: () => console.log('Info'),
-    text: 'Info',
-  },
-];
-
-export const AppCommandBar: React.FunctionComponent = () => (
-  <CommandBar
-    items={items}
-    overflowItems={overflowItems}
-    overflowButtonProps={overflowProps}
-    farItems={farItems}
-    ariaLabel="Inbox actions"
-    primaryGroupAriaLabel="Email actions"
-    farItemsGroupAriaLabel="More actions"
-  />
-);
+  return (
+    <>
+      <CommandBar
+        items={items}
+        farItems={farItems}
+        ariaLabel="Inbox actions"
+        primaryGroupAriaLabel="Email actions"
+        farItemsGroupAriaLabel="More actions"
+      />
+      <LeftNav isOpen={isNavOpen} />
+    </>
+  );
+};

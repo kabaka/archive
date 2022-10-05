@@ -39,3 +39,4 @@ config.ts
 
 # fonts copied during build
 packages/archive-web/public/static/fonts/font-icons-mdl2
+packages/archive-web/public/static/shiki

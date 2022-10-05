@@ -22,22 +22,19 @@ export namespace ArchiveStorage {
   export const tags = createStorage(ArchiveConfiguration.storage.tags);
 
   export const getTags = (prefix?: string) => tags.getTags(prefix);
-  export const getTagName = (tag: IArchiveTag | string): Promise<string> => tags.getTagName(tag);
+  export const getTagName = (tag: IArchiveTag | string) => tags.getTagName(tag);
+  export const createTag = (tag: IArchiveTag): void => tags.createTag(tag);
+  export const addTag = (tag: IArchiveTag, record: IArchiveRecord) => tags.addTag(tag, record);
+  export const removeTag = (tag: IArchiveTag, record: IArchiveRecord) => tags.removeTag(tag, record);
 
-  export const addTag = async (tag: IArchiveTag, record: IArchiveRecord) => {
-    await tags.addTag(tag, record);
-  };
-
-  export const removeTag = async (tag: IArchiveTag, record: IArchiveRecord) => {
-    await tags.removeTag(tag, record);
-  };
-
-  export const getRecordTags = (record: IArchiveRecord | string) => tags.getRecordTags(record);
+  export const getRecordTags = (
+    record: IArchiveRecord | string,
+  ): Promise<IArchiveRecord[]> => tags.getRecordTags(record);
 
   export const getTagRecords = (tag: IArchiveTag) => tags.getTagRecords(tag);
 
   // eslint-disable-next-line max-len
-  export const getArchiveRecord = async (recordId: string, status: ArchiveRecordStatus = ArchiveRecordStatus.processed) => {
+  export const getArchiveRecord = (recordId: string, status: ArchiveRecordStatus = ArchiveRecordStatus.processed) => {
     switch (status) {
       case ArchiveRecordStatus.new:
         throw new Error('attempted to load an ArchiveRecord with \'new\' status');
@@ -52,10 +49,13 @@ export namespace ArchiveStorage {
     }
   };
 
-  // eslint-disable-next-line max-len
-  export const getArchiveRecordMetadata = (record: IArchiveRecord | string) => metadata.getMetadata(record);
+  export const getArchiveRecordMetadata = (
+    record: IArchiveRecord | string,
+  ) => metadata.getMetadata(record);
 
-  export const storeArchiveRecordMetadata = async (record: IArchiveRecord) => {
+  export const storeArchiveRecordMetadata = async (
+    record: IArchiveRecord,
+  ) => {
     await metadata.createMetadata(record);
   };
 
