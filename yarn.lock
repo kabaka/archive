@@ -2143,12 +2143,12 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@fluentui/azure-themes@^8.5.7":
-  version "8.5.7"
-  resolved "https://registry.yarnpkg.com/@fluentui/azure-themes/-/azure-themes-8.5.7.tgz#20c23d07e479457871b33ecee2aa585250c84d72"
-  integrity sha512-4QNCMK60cezSfue9yLnw+jxwK/10p4SupgOeDGzWyUzGILN52nZzzdCG95a56v1obxk5snTsK2WS/AESTS0glA==
+"@fluentui/azure-themes@^8.5.8":
+  version "8.5.8"
+  resolved "https://registry.yarnpkg.com/@fluentui/azure-themes/-/azure-themes-8.5.8.tgz#9128b68f0b0bf2312f1b8a1b7fdf10dfd47a3d7f"
+  integrity sha512-QIsybqFAia1LfzMZer80BPN6Qe5cHdQSiMpajRgtqwezGUryrumC63hhNJrSrTquhBawyo6pQjevE0qn2CjrCg==
   dependencies:
-    "@fluentui/react" "^8.97.1"
+    "@fluentui/react" "^8.97.2"
     "@fluentui/set-version" "^8.2.2"
     tslib "^2.1.0"
 
@@ -2248,26 +2248,6 @@
   integrity sha512-/1uQ01HqGRpUOMozUy1FYmxp6blZZvtKN50rqxnQJr8O1bcpg8lJzhq064E8EjOXfdNh47zKSloP4ebbDI5vrw==
   dependencies:
     "@fluentui/set-version" "^8.2.2"
-    tslib "^2.1.0"
-
-"@fluentui/react@^8.97.1":
-  version "8.97.1"
-  resolved "https://registry.yarnpkg.com/@fluentui/react/-/react-8.97.1.tgz#63b118d6d239d05dd645f8178b7e4a849b58f70f"
-  integrity sha512-haj+MOSYtiF39X76ga8L77DAV/p1dGkKz2xtkI8xa5ut9oi+xGOqwY1iaDa06ONC2zyqy08cbdrXJvqiJ+0uOQ==
-  dependencies:
-    "@fluentui/date-time-utilities" "^8.5.2"
-    "@fluentui/font-icons-mdl2" "^8.5.0"
-    "@fluentui/foundation-legacy" "^8.2.20"
-    "@fluentui/merge-styles" "^8.5.3"
-    "@fluentui/react-focus" "^8.8.5"
-    "@fluentui/react-hooks" "^8.6.11"
-    "@fluentui/react-portal-compat-context" "^9.0.2"
-    "@fluentui/react-window-provider" "^2.2.2"
-    "@fluentui/set-version" "^8.2.2"
-    "@fluentui/style-utilities" "^8.7.12"
-    "@fluentui/theme" "^2.6.16"
-    "@fluentui/utilities" "^8.13.1"
-    "@microsoft/load-themed-styles" "^1.10.26"
     tslib "^2.1.0"
 
 "@fluentui/react@^8.97.2":
