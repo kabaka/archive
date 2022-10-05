@@ -2198,6 +2198,16 @@
     "@fluentui/utilities" "^8.13.1"
     tslib "^2.1.0"
 
+"@fluentui/font-icons-mdl2@^8.5.0":
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/@fluentui/font-icons-mdl2/-/font-icons-mdl2-8.5.0.tgz#b358ed57be5b52c921558be6535e70b68d4d4f1e"
+  integrity sha512-EV9QFy/plJ0blnf6AKZ8s2UQMfzNTUEdtAm/nP2Z3cd7XdYyXBN7HDAWmxwNWhoGyZ6hhKrruj4ZW0C/qKYDMQ==
+  dependencies:
+    "@fluentui/set-version" "^8.2.2"
+    "@fluentui/style-utilities" "^8.7.12"
+    "@fluentui/utilities" "^8.13.1"
+    tslib "^2.1.0"
+
 "@fluentui/foundation-legacy@^8.2.20":
   version "8.2.20"
   resolved "https://registry.yarnpkg.com/@fluentui/foundation-legacy/-/foundation-legacy-8.2.20.tgz#a926d4a4535f0bececcbce3cec859abd439a3840"
@@ -2274,6 +2284,26 @@
   version "8.97.2"
   resolved "https://registry.yarnpkg.com/@fluentui/react/-/react-8.97.2.tgz#486e8f76f27244de3f5405f2bf9cd8636f2fbc0c"
   integrity sha512-MwBFRydKfdu26F3yXqpCJxVUuWw8GDl1pEkjlWfKEKnBMiODmEmeMEsvSaI3BusXXz09q05+cdMqmD4lhuZlcw==
+  dependencies:
+    "@fluentui/date-time-utilities" "^8.5.2"
+    "@fluentui/font-icons-mdl2" "^8.5.0"
+    "@fluentui/foundation-legacy" "^8.2.20"
+    "@fluentui/merge-styles" "^8.5.3"
+    "@fluentui/react-focus" "^8.8.5"
+    "@fluentui/react-hooks" "^8.6.11"
+    "@fluentui/react-portal-compat-context" "^9.0.2"
+    "@fluentui/react-window-provider" "^2.2.2"
+    "@fluentui/set-version" "^8.2.2"
+    "@fluentui/style-utilities" "^8.7.12"
+    "@fluentui/theme" "^2.6.16"
+    "@fluentui/utilities" "^8.13.1"
+    "@microsoft/load-themed-styles" "^1.10.26"
+    tslib "^2.1.0"
+
+"@fluentui/react@^8.97.1":
+  version "8.97.1"
+  resolved "https://registry.yarnpkg.com/@fluentui/react/-/react-8.97.1.tgz#63b118d6d239d05dd645f8178b7e4a849b58f70f"
+  integrity sha512-haj+MOSYtiF39X76ga8L77DAV/p1dGkKz2xtkI8xa5ut9oi+xGOqwY1iaDa06ONC2zyqy08cbdrXJvqiJ+0uOQ==
   dependencies:
     "@fluentui/date-time-utilities" "^8.5.2"
     "@fluentui/font-icons-mdl2" "^8.5.0"
@@ -10482,10 +10512,10 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-web-vitals@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-3.0.2.tgz#a484109dc5d64bc4924f174267ce20e7cd4c7934"
-  integrity sha512-YygzeCdGpNrCHIjW14AI4SxMX2IcONhDvwhHc9KswCIixfSeVl08WdKDfzZaypq2ynRIG3lzGO3CO5dXYzc9+w==
+web-vitals@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-3.0.3.tgz#e08cf4d30398baf91984f230a87872d6049e173f"
+  integrity sha512-8K6cl3alkVhwv7RQm3WAWFzvP9dBTH4CwOE7G3DfQDEnBJTdtNgX5XMqgE7aE79wac/kJ8fHWftUfH3AVxxbBw==
 
 webidl-conversions@^3.0.0:
   version "3.0.1"
