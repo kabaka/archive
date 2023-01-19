@@ -3127,10 +3127,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@*", "@types/jest@^29.1.1":
-  version "29.1.1"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.1.1.tgz#cf21a0835a1ba9a30ea1966019f1261c6a114c92"
-  integrity sha512-U9Ey07dGWl6fUFaIaUQUKWG5NoKi/zizeVQCGV8s4nSU0jPgqphVZvS64+8BtWYvrc3ZGw6wo943NSYPxkrp/g==
+"@types/jest@*", "@types/jest@^29.2.6":
+  version "29.2.6"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.2.6.tgz#1d43c8e533463d0437edef30b2d45d5aa3d95b0a"
+  integrity sha512-XEUC/Tgw3uMh6Ho8GkUtQ2lPhY5Fmgyp3TdlkTJs1W9VgNxs+Ow/x3Elh8lHQKqCbZL0AubQuqWjHVT033Hhrw==
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
