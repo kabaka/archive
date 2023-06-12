@@ -2286,13 +2286,13 @@
     "@fluentui/set-version" "^8.2.6"
     tslib "^2.1.0"
 
-"@fluentui/react-file-type-icons@^8.7.8":
-  version "8.7.8"
-  resolved "https://registry.yarnpkg.com/@fluentui/react-file-type-icons/-/react-file-type-icons-8.7.8.tgz#131ba2d4f1559b07255f9ab67fe02732251182b6"
-  integrity sha512-0nyO0BT97ROxRbJfd9s0IoUkMjdyC9pxKi39tQKMyM/memzdKDc1WwybbQA37GamcysVJyH7X3RTju2r8XE0KQ==
+"@fluentui/react-file-type-icons@^8.9.0":
+  version "8.9.0"
+  resolved "https://registry.yarnpkg.com/@fluentui/react-file-type-icons/-/react-file-type-icons-8.9.0.tgz#ba93f393a7943c1170ad07f0ea955fc263012100"
+  integrity sha512-DkE0yS+2t6Z9nBYMhTc7VBelR6JunXHgc8NDbDO7+sZWoIZmqDiOtHfKocpmR0WbXUchiVeCRWQe7K45+7taeA==
   dependencies:
-    "@fluentui/set-version" "^8.2.2"
-    "@fluentui/style-utilities" "^8.7.12"
+    "@fluentui/set-version" "^8.2.11"
+    "@fluentui/style-utilities" "^8.9.14"
     tslib "^2.1.0"
 
 "@fluentui/react-focus@^8.8.19":
@@ -2377,7 +2377,7 @@
   dependencies:
     tslib "^2.1.0"
 
-"@fluentui/style-utilities@^8.7.12", "@fluentui/style-utilities@^8.9.14", "@fluentui/style-utilities@^8.9.6":
+"@fluentui/style-utilities@^8.9.14", "@fluentui/style-utilities@^8.9.6":
   version "8.9.14"
   resolved "https://registry.yarnpkg.com/@fluentui/style-utilities/-/style-utilities-8.9.14.tgz#39757f17b296977543233fc429a981859fa2af4d"
   integrity sha512-On48B9biXgV6PgimFdSwRuYLzue9PjwqxT31UP3w5uvwANL+Hqile5AbkR5g9RartoJiDIk1bHAP7QQkqI1jEg==
