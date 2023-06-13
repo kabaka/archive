@@ -10,7 +10,7 @@
     "dev": "tsc -w"
   },
   "dependencies": {
-    "typescript": "^4.8.4",
+    "typescript": "^5.1.3",
     "archive-core": "0.1.0",
     "crypto": "npm:crypto-browserify",
     "crypto-browserify": "^3.12.0"
